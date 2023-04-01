@@ -1,3 +1,3 @@
-const authRouter = require("./api/index");
+const authRouter = require("./api");
 
 module.exports = { authRouter };

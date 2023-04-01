@@ -1,5 +1,5 @@
-const ctrl = require("./contacts");
+const ctrllUsers = require("./auth");
 
 module.exports = {
-  ctrl,
+  ctrllUsers,
 };

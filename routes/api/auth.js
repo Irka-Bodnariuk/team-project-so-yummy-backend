@@ -1,35 +1,23 @@
 const express = require("express");
 
-// const {
-//   ctrl: { getAll, getById, add, deleteByID, updateByID, updateStatusContact },
-// } = require("../../controllers");
+const { validateBody, authenticate } = require("../../middlewares");
 
-// const { validateBody, isValidId } = require("../../middlewares");
+const {
+  schemas: { registerSchema, loginSchema },
+} = require("../../models/user");
 
-// const { schemas } = require("../../models");
+const {
+  ctrllUsers: { register, login, current, logout },
+} = require("../../controllers");
 
 const router = express.Router();
 
-// router.get("/", getAll);
+router.post("/register", validateBody(registerSchema), register);
 
-// router.get("/:contactId", isValidId, getById);
+router.post("/login", validateBody(loginSchema), login);
 
-// router.post("/", validateBody(schemas.addSchema), add);
+router.get("/current", authenticate, current);
 
-// router.delete("/:contactId", isValidId, deleteByID);
-
-// router.put(
-//   "/:contactId",
-//   isValidId,
-//   validateBody(schemas.addSchema),
-//   updateByID
-// );
-
-// router.patch(
-//   "/:contactId/favorite",
-//   isValidId,
-//   validateBody(schemas.updateFavoriteSchema),
-//   updateStatusContact
-// );
+router.post("/logout", authenticate, logout);
 
 module.exports = router;
