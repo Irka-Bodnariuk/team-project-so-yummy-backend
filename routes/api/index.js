@@ -1,3 +1,4 @@
-const router = require("./auth");
+const authRouter = require("./auth");
+const recipesRouter = require("./recipes");
 
-module.exports = router;
+module.exports = { authRouter, recipesRouter };
