@@ -3,7 +3,7 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
-const { authRouter, ingredientsRouter } = require("./routes");
+const { authRouter, ingredientsRouter, recipesRouter } = require("./routes");
 
 const app = express();
 
@@ -15,7 +15,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
-app.use("/api/ingredients", ingredientsRouter)
+
+app.use("/api/ingredients", ingredientsRouter);
+
+app.use("/api/recipes", recipesRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

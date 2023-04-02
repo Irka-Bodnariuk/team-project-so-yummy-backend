@@ -1,13 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const {
+  ctrllIngredienents: { getAllIngredients },
+} = require("../../controllers");
 
-const ctrl = require('../../controllers/ingredienents')
-
-
-router.get("/list", ctrl.getAllIngredients);
-
-
+router.get("/list", getAllIngredients);
 
 module.exports = router;
-
