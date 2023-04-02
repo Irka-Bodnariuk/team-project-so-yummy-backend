@@ -1,3 +1,3 @@
-const category = require("./category");
+const categoryList = require("./categoryList");
 
-module.exports = category;
+module.exports = categoryList;
