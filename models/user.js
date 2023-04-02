@@ -26,6 +26,10 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
+    avatarURL: {
+      type: String,
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -47,6 +51,7 @@ const schemas = {
   registerSchema,
   loginSchema,
 };
+
 const User = model("user", userSchema);
 
 module.exports = { User, schemas };
