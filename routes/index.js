@@ -1,3 +1,7 @@
 const authRouter = require("./api");
+const ingredientsRouter = require("./api/ingredients")
 
-module.exports = { authRouter };
+module.exports = {
+    authRouter,
+    ingredientsRouter,
+};
