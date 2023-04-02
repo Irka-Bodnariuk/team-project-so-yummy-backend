@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/category-list", authenticate, getAllRecipes);
 
-router.get("/main-page", authenticate, getRecipesMainPage);
+router.get("/main-page", getRecipesMainPage);
 
 module.exports = router;
