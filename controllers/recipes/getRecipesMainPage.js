@@ -4,7 +4,7 @@ const getRecipesByCategory = async (req, res, next) => {
   const result = await Recipe.aggregate([
     { $group: { _id: "$category", items: { $push: "$$ROOT" } } },
     { $project: { firstFour: { $slice: ["$items", 4] } } },
-    { $limit: 4 }, // Optional limit to the number of categories to return
+    { $limit: 4 },
   ]);
 
   res.status(200).json({

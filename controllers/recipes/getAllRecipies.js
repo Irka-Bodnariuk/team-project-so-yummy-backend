@@ -1,7 +1,7 @@
-const category = require("../../recipesCategory");
+const categoryList = require("../../recipesCategory");
 
 const getAllRecipes = async (req, res, next) => {
-  res.json(category.sort());
+  res.json(categoryList.sort());
 };
 
 module.exports = getAllRecipes;
