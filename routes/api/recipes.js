@@ -4,24 +4,33 @@ const express = require("express");
 
 const {
   ctrllRecipes: {
-    getAllRecipes,
+    getAll,
+    getCategoryList,
     getRecipesMainPage,
     getRecipeById,
     getRecipeByCategory,
-    searchRecipeByTitle,
     searchRecipeByIngredient,
+    searchRecipeByTitle,
+
   },
 } = require("../../controllers");
 
 const router = express.Router();
 
-router.get("/category-list", getAllRecipes);
+router.get("/", getAll);
+
+router.get("/category-list", getCategoryList);
+
 
 router.get("/main-page", getRecipesMainPage);
 
 router.get("/category/:category", getRecipeByCategory);
 
-router.get("/:id", getRecipeById);
+router.get("/id/:id", getRecipeById);
+
+router.get("/search/title/:query", searchRecipeByTitle);
+
+router.get("/search/ingredient/:query", searchRecipeByIngredient);
 
 router.get("/search/title/:title", searchRecipeByTitle);
 

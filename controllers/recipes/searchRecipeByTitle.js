@@ -1,25 +1,46 @@
 const { Recipe } = require("../../models/recipes");
 
-const searchRecipeByTitle = async (req, res, next) => {
-  const { title } = req.params;
-  const { page = 1, limit = 20 } = req.query;
-  const skip = (page - 1) * limit;
+const {
+  getSkipLimitPage,
+  getRegexForSearchByKeywords,
+  getSortTypeByTitleOrPopularity,
+  getFacetObject,
+  processPagedRecipesResult,
+  HttpError,
+} = require("../../helpers");
 
-  const result = await Recipe.find({ title }, "-createdAt -updatedAt", {
-    skip,
-    limit,
-  });
-
-  if (!result) {
-    res.status(404);
-    throw new Error(`Recipe with title - ${title} not found`);
+const searchRecipeByTitle = async (req, res) => {
+  const { query } = req.params;
+  if (!query) {
+    throw HttpError(400);
   }
-  res.status(200).json({
-    code: 200,
-    message: "success",
-    data: result,
-    quantity: result.length,
+  const regex = getRegexForSearchByKeywords(query);
+
+  // const userId = req.user._id;
+
+  const { page: sPage = 1, limit: sLimit = 12, sort: sSort } = req.query;
+
+  const { skip, limit, page } = getSkipLimitPage({
+    page: sPage,
+    limit: sLimit,
   });
+
+  const { sortOpts, sort } = getSortTypeByTitleOrPopularity(sSort);
+
+  const result = await Recipe.aggregate([
+    { $match: { title: { $regex: regex } } },
+    {
+      ...getFacetObject({ sortOpts, skip, limit }),
+    },
+  ]);
+
+  const response = processPagedRecipesResult({
+    result,
+    // userId
+  });
+
+  res.json({ ...response, page, limit, sort });
+
 };
 
 module.exports = searchRecipeByTitle;

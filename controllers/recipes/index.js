@@ -1,17 +1,21 @@
-const getAllRecipes = require("./getAllRecipies");
+const getAll = require("./getAll");
+const getCategoryList = require("./getCategoryList");
 const getRecipesMainPage = require("./getRecipesMainPage");
 const getRecipeById = require("./getRecipeById");
 const getRecipeByCategory = require("./getRecipeByCategory");
-const searchRecipeByTitle = require("./searchRecipeByTitle");
 const searchRecipeByIngredient = require("./searchRecipeByIngredient");
+const searchRecipeByTitle = require("./searchRecipeByTitle");
+
 
 const { ctrlWrapper } = require("../../helpers");
 
 module.exports = {
-  getAllRecipes: ctrlWrapper(getAllRecipes),
+  getAll: ctrlWrapper(getAll),
+  getCategoryList: ctrlWrapper(getCategoryList),
   getRecipesMainPage: ctrlWrapper(getRecipesMainPage),
   getRecipeById: ctrlWrapper(getRecipeById),
   getRecipeByCategory: ctrlWrapper(getRecipeByCategory),
-  searchRecipeByTitle: ctrlWrapper(searchRecipeByTitle),
   searchRecipeByIngredient: ctrlWrapper(searchRecipeByIngredient),
+  searchRecipeByTitle: ctrlWrapper(searchRecipeByTitle),
+
 };
