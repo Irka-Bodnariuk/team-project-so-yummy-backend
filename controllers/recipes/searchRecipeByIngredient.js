@@ -1,5 +1,4 @@
 const { Recipe } = require("../../models/recipes");
-
 const {
   getSkipLimitPage,
   getRegexForSearchByKeywords,
@@ -59,4 +58,5 @@ const searchRecipeByIngredient = async (req, res, next) => {
 
   res.json({ ...response, page, limit, sort });
 };
+
 module.exports = searchRecipeByIngredient;

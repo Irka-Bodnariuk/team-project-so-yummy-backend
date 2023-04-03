@@ -11,6 +11,7 @@ const {
     getRecipeByCategory,
     searchRecipeByIngredient,
     searchRecipeByTitle,
+
   },
 } = require("../../controllers");
 
@@ -19,6 +20,7 @@ const router = express.Router();
 router.get("/", getAll);
 
 router.get("/category-list", getCategoryList);
+
 
 router.get("/main-page", getRecipesMainPage);
 
@@ -29,5 +31,9 @@ router.get("/id/:id", getRecipeById);
 router.get("/search/title/:query", searchRecipeByTitle);
 
 router.get("/search/ingredient/:query", searchRecipeByIngredient);
+
+router.get("/search/title/:title", searchRecipeByTitle);
+
+router.get("/search/ingredient/:ingredient", searchRecipeByIngredient);
 
 module.exports = router;

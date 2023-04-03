@@ -6,6 +6,7 @@ const getRecipeByCategory = require("./getRecipeByCategory");
 const searchRecipeByIngredient = require("./searchRecipeByIngredient");
 const searchRecipeByTitle = require("./searchRecipeByTitle");
 
+
 const { ctrlWrapper } = require("../../helpers");
 
 module.exports = {
@@ -16,4 +17,5 @@ module.exports = {
   getRecipeByCategory: ctrlWrapper(getRecipeByCategory),
   searchRecipeByIngredient: ctrlWrapper(searchRecipeByIngredient),
   searchRecipeByTitle: ctrlWrapper(searchRecipeByTitle),
+
 };
