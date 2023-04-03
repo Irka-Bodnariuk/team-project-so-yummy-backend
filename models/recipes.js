@@ -1,9 +1,10 @@
 const { Schema, model } = require("mongoose");
 const { handleMongooseError } = require("../helpers");
-// const Joi = require("joi");
+const Joi = require("joi");
 
-const resipiesSchema = new Schema(
+const recipeSchema = new Schema(
   {
+    originalId: String,
     title: {
       type: String,
       required: [true, "Set name for recipe"],
@@ -30,15 +31,15 @@ const resipiesSchema = new Schema(
     },
     area: {
       type: String,
+      required: true,
     },
     instructions: {
       type: String,
-      minlength: 30,
       required: true,
-      unique: true,
     },
     description: {
       type: String,
+      default: "",
     },
     thumb: {
       type: String,
@@ -48,57 +49,66 @@ const resipiesSchema = new Schema(
     },
     time: {
       type: String,
-      required: true,
+      default: "",
     },
     popularity: {
       type: Number,
+      default: 0,
     },
     favorites: {
-      type: Array,
+      type: [Schema.Types.ObjectId],
+      ref: "user",
+      default: [],
     },
     likes: {
-      type: Array,
+      type: [Schema.Types.ObjectId],
+      ref: "user",
+      default: [],
     },
     youtube: {
       type: String,
+      default: "",
     },
     tags: {
-      type: Array,
+      type: [String],
+      default: [],
     },
-    ingredients: [
-      {
-        id: Schema.Types.ObjectId,
-        measure: String,
-      },
-    ],
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: "user",
+    ingredients: {
+      _id: false,
+      type: [
+        {
+          id: {
+            type: Schema.Types.ObjectId,
+            ref: "ingredient",
+            required: true,
+          },
+          measure: {
+            type: String,
+            default: "",
+          },
+        },
+      ],
+      default: [],
     },
   },
   { versionKey: false, timestamps: true }
 );
 
-resipiesSchema.post("save", handleMongooseError);
+recipeSchema.post("save", handleMongooseError);
+recipeSchema.pre("save", function (next) {
+  this.popularity = this.likes.length;
+  next();
+});
 
-// const addSchema = Joi.object({
-//   name: Joi.string().required(),
-//   email: Joi.string().required(),
-//   phone: Joi.string().required(),
-//   favorite: Joi.boolean(),
-// });
+const addSchema = Joi.object({});
 
-// const updateFavoriteSchems = Joi.object({
-//   favorite: Joi.boolean().required(),
-// });
+const schemas = {
+  addSchema,
+};
 
-// const schemas = {
-//   addSchema,
-//   updateFavoriteSchems,
-// };
-
-const Recipe = model("recipe", resipiesSchema);
+const Recipe = model("recipe", recipeSchema);
 
 module.exports = {
   Recipe,
+  schemas,
 };
