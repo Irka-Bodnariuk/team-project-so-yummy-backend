@@ -1,11 +1,11 @@
 const express = require("express");
 
-const { authenticate } = require("../../middlewares");
+// const { authenticate } = require("../../middlewares");
 
 const {
   ctrllRecipes: {
     getAll,
-    getAllRecipes,
+    getCategoryList,
     getRecipesMainPage,
     getRecipeById,
     getRecipeByCategory,
@@ -18,7 +18,7 @@ const router = express.Router();
 
 router.get("/", getAll);
 
-router.get("/category-list", authenticate, getAllRecipes);
+router.get("/category-list", getCategoryList);
 
 router.get("/main-page", getRecipesMainPage);
 

@@ -1,37 +1,41 @@
 const { Recipe } = require("../../models/recipes");
 const categoryList = require("../../recipesCategory");
+const {
+  HttpError,
+  getSkipLimitPage,
+  getSortTypeByTitleOrPopularity,
+  getFacetObject,
+  processPagedRecipesResult,
+} = require("../../helpers");
 
 const getRecipeByCategory = async (req, res, next) => {
   const { category } = req.params;
-  const { page = 1, limit = 8 } = req.query;
-  const skip = (page - 1) * limit;
-
-  if (!categoryList.find((item) => item === category)) {
-    res.status(404);
-    throw new Error(`Category ${category} not found`);
+  if (!categoryList.includes(category)) {
+    throw HttpError(400, `Category ${category} not found`);
   }
+  //  const userId = req.user._id;
 
-  const result = await Recipe.find(
-    { category: `${category}` },
-    "-createdAt -updatedAt",
+  const { page: sPage = 1, limit: sLimit = 8, sort: sSort } = req.query;
+  const { skip, limit, page } = getSkipLimitPage({
+    page: sPage,
+    limit: sLimit,
+  });
+
+  const { sortOpts, sort } = getSortTypeByTitleOrPopularity(sSort);
+
+  const result = await Recipe.aggregate([
+    { $match: { category: category } },
     {
-      skip,
-      limit,
-    }
-  ).sort({
-    createdAt: -1,
+      ...getFacetObject({ sortOpts, skip, limit }),
+    },
+  ]);
+
+  const response = processPagedRecipesResult({
+    result,
+    // userId
   });
 
-  if (!result) {
-    res.status(404);
-    throw new Error(`Category ${category} not found`);
-  }
-  res.status(200).json({
-    code: 200,
-    message: "success",
-    data: result,
-    quantity: result.length,
-  });
+  res.json({ ...response, page, limit, sort });
 };
 
 module.exports = getRecipeByCategory;

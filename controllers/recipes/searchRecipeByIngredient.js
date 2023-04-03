@@ -2,17 +2,22 @@ const { Recipe } = require("../../models/recipes");
 
 const {
   getSkipLimitPage,
-  getRegexForSearchByKeyword,
+  getRegexForSearchByKeywords,
   getFacetObject,
   getSortTypeByTitleOrPopularity,
   processPagedRecipesResult,
+  HttpError,
 } = require("../../helpers");
 
 const searchRecipeByIngredient = async (req, res, next) => {
   const { query } = req.params;
-  const regex = getRegexForSearchByKeyword(query);
+  const regex = getRegexForSearchByKeywords(query);
 
-  const userId = req.user._id;
+  if (!query) {
+    throw HttpError(400);
+  }
+
+  // const userId = req.user._id;
 
   const { page: sPage = 1, limit: sLimit = 12, sort: sSort } = req.query;
 
@@ -42,7 +47,15 @@ const searchRecipeByIngredient = async (req, res, next) => {
     },
   ]);
 
-  const response = processPagedRecipesResult({ result, userId });
+  const [{ data }] = result;
+  if (data.length === 0) {
+    throw HttpError(404, `Ingredieny with name ${query} not found`);
+  }
+
+  const response = processPagedRecipesResult({
+    result,
+    // userId
+  });
 
   res.json({ ...response, page, limit, sort });
 };

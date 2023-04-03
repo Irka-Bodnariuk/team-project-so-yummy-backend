@@ -1,5 +1,5 @@
 const getAll = require("./getAll");
-const getAllRecipes = require("./getAllRecipies");
+const getCategoryList = require("./getCategoryList");
 const getRecipesMainPage = require("./getRecipesMainPage");
 const getRecipeById = require("./getRecipeById");
 const getRecipeByCategory = require("./getRecipeByCategory");
@@ -10,7 +10,7 @@ const { ctrlWrapper } = require("../../helpers");
 
 module.exports = {
   getAll: ctrlWrapper(getAll),
-  getAllRecipes: ctrlWrapper(getAllRecipes),
+  getCategoryList: ctrlWrapper(getCategoryList),
   getRecipesMainPage: ctrlWrapper(getRecipesMainPage),
   getRecipeById: ctrlWrapper(getRecipeById),
   getRecipeByCategory: ctrlWrapper(getRecipeByCategory),

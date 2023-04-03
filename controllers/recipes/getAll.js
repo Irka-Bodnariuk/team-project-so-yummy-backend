@@ -7,7 +7,7 @@ const {
 } = require("../../helpers");
 
 const getAll = async (req, res) => {
-  const { page: sPage = 1, limit: sLimit = 12, sort: sSort } = req.query;
+  const { page: sPage = 1, limit: sLimit = 20, sort: sSort } = req.query;
 
   const { skip, limit, page } = getSkipLimitPage({
     page: sPage,
@@ -22,7 +22,10 @@ const getAll = async (req, res) => {
     },
   ]);
 
-  const response = processPagedRecipesResult({ result, userId: req.user._id });
+  const response = processPagedRecipesResult({
+    result,
+    // userId: req.user._id
+  });
 
   res.json({ ...response, page, limit, sort });
 };
