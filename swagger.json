@@ -1,0 +1,240 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Swagger Yummi - OpenAPI 3.0",
+        "description": "Swagger documentation for project So Yummi",
+
+        "servers": [
+            {
+                "url": "https://team-project-so-yummy-backend.onrender.com/api/"
+            }
+        ],
+        "tags": [
+            { "name": "auth", "description": "Authorization endpoints" },
+            { "name": "recipes", "description": "Recipes endpoints" }
+        ]
+    },
+
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": ["auth"],
+                "summary": "Register a new user",
+                "description": "Register a new user",
+                "operationId": "register",
+                "requestBody": {
+                    "description": "Registration object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    },
+                    "409": {
+                        "description": "User already exists"
+                    }
+                }
+            }
+        },
+
+        "/api/auth/login": {
+            "post": {
+                "tags": ["auth"],
+                "summary": "User login",
+                "description": "User login",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "Login object",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/UserRequest"
+                            }
+                        },
+                        "required": true
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+
+        "/api/auth/current": {
+            "get": {
+                "tags": ["auth"],
+                "summary": "Get current user",
+                "description": "Get current user",
+                "operationId": "current",
+                "requestBody": {
+                    "description": "Current object",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/UserRequest"
+                            }
+                        },
+                        "required": true
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/UserRequest"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+
+        "/api/auth/logout": {
+            "post": {
+                "tags": ["auth"],
+                "summary": "User logout",
+                "description": "User logout",
+                "operationId": "logout",
+                "requestBody": {
+                    "description": "Logout object",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/LogoutRequest"
+                            }
+                        },
+                        "required": true
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        }
+    },
+
+    "components": {
+        "schemas": {
+            "RegistrationRequest": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "David"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "test@test.ua"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "qwerty123"
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "name": {
+                            "type": "string",
+                            "example": "David"
+                        },
+                        "email": {
+                            "type": "string",
+                            "example": "test@test.ua"
+                        }
+                    }
+                }
+            },
+            "UserRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "test@test.ua"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "qwerty123"
+                    }
+                }
+            },
+            "LogoutRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "cjhbq742b11kuyqu"
+                    }
+                }
+            }
+        }
+    }
+}
