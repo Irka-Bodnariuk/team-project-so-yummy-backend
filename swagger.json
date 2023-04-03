@@ -202,13 +202,16 @@
                 "type": "object",
                 "properties": {
                     "user": {
-                        "name": {
-                            "type": "string",
-                            "example": "David"
-                        },
-                        "email": {
-                            "type": "string",
-                            "example": "test@test.ua"
+                        "type": "object",
+                        "example": {
+                            "name": {
+                                "type": "string",
+                                "example": "David"
+                            },
+                            "email": {
+                                "type": "string",
+                                "example": "test@test.ua"
+                            }
                         }
                     }
                 }
