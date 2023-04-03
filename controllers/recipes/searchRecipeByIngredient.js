@@ -1,39 +1,62 @@
 const { Recipe } = require("../../models/recipes");
-const Ingredients = require("../../models/ingredients");
+const {
+  getSkipLimitPage,
+  getRegexForSearchByKeywords,
+  getFacetObject,
+  getSortTypeByTitleOrPopularity,
+  processPagedRecipesResult,
+  HttpError,
+} = require("../../helpers");
 
 const searchRecipeByIngredient = async (req, res, next) => {
-  const { ingredient: ttl } = req.params;
-  const { page = 1, limit = 20 } = req.query;
-  const skip = (page - 1) * limit;
+  const { query } = req.params;
+  const regex = getRegexForSearchByKeywords(query);
 
-  const ingredient = await Ingredients.find({ ttl });
-
-  if (!ingredient || ingredient.length === 0) {
-    res.status(404);
-    throw new Error(`Ingredient ${ttl} not found`);
-  }
-  const [{ _id: id }] = ingredient;
-
-  const recipe = await Recipe.find(
-    { "ingredients.id": `${id}` },
-    "-createdAt -updatedAt",
-    {
-      skip,
-      limit,
-    }
-  );
-
-  if (!recipe || recipe === []) {
-    res.status(404);
-    throw new Error(`Recipe not found`);
+  if (!query) {
+    throw HttpError(400);
   }
 
-  res.status(200).json({
-    code: 200,
-    message: "success",
-    data: recipe,
-    quantity: recipe.length,
+  // const userId = req.user._id;
+
+  const { page: sPage = 1, limit: sLimit = 12, sort: sSort } = req.query;
+
+  const { skip, limit, page } = getSkipLimitPage({
+    page: sPage,
+    limit: sLimit,
   });
+
+  const { sortOpts, sort } = getSortTypeByTitleOrPopularity(sSort);
+
+  const result = await Recipe.aggregate([
+    {
+      $lookup: {
+        from: "ingredients",
+        localField: "ingredients.id",
+        foreignField: "_id",
+        as: "ingredients",
+      },
+    },
+    {
+      $match: {
+        "ingredients.ttl": { $regex: regex },
+      },
+    },
+    {
+      ...getFacetObject({ sortOpts, skip, limit }),
+    },
+  ]);
+
+  const [{ data }] = result;
+  if (data.length === 0) {
+    throw HttpError(404, `Ingredieny with name ${query} not found`);
+  }
+
+  const response = processPagedRecipesResult({
+    result,
+    // userId
+  });
+
+  res.json({ ...response, page, limit, sort });
 };
 
 module.exports = searchRecipeByIngredient;
