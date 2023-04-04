@@ -16,7 +16,7 @@ const searchRecipeByTitle = async (req, res) => {
   }
   const regex = getRegexForSearchByKeywords(query);
 
-  // const userId = req.user._id;
+  const userId = req.user._id;
 
   const { page: sPage = 1, limit: sLimit = 12, sort: sSort } = req.query;
 
@@ -36,11 +36,10 @@ const searchRecipeByTitle = async (req, res) => {
 
   const response = processPagedRecipesResult({
     result,
-    // userId
+    userId,
   });
 
   res.json({ ...response, page, limit, sort });
-
 };
 
 module.exports = searchRecipeByTitle;

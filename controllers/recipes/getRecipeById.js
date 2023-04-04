@@ -20,31 +20,45 @@ const getRecipeById = async (req, res, next) => {
     ingr._id = ingr.id._id;
     delete ingr.id;
   });
-  // const {
-  //   _id,
-  //   title,
-  //   category,
-  //   description,
-  //   area,
-  //   instructions,
-  //   fullImg: thumb,
-  //   time,
-  //   popularity,
-  //   youtube,
-  //   tags,
-  //   ingredients,
-  //   favorites,
-  //   likes,
-  //   preview,
-  // } = result;
-  // const like = likes.some((item) => {
-  //   return String(item._id) === String(req.user._id);
-  // });
-  // const favorite = favorites.some((item) => {
-  //   return String(item._id) === String(req.user._id);
-  // });
+  const {
+    _id,
+    title,
+    category,
+    description,
+    area,
+    instructions,
+    fullImg: thumb,
+    time,
+    popularity,
+    youtube,
+    tags,
+    ingredients,
+    favorites,
+    likes,
+    preview,
+  } = result;
+  const like = likes.some((item) => {
+    return String(item._id) === String(req.user._id);
+  });
+  const favorite = favorites.some((item) => {
+    return String(item._id) === String(req.user._id);
+  });
   res.json({
-    result,
+    _id,
+    title,
+    category,
+    description,
+    instructions,
+    ingredients,
+    time,
+    popularity,
+    favorite,
+    like,
+    previewImg: preview,
+    fullImage: thumb,
+    area,
+    tags,
+    youtube,
   });
 };
 

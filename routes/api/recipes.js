@@ -1,6 +1,6 @@
 const express = require("express");
 
-// const { authenticate } = require("../../middlewares");
+const { authenticate } = require("../../middlewares");
 
 const {
   ctrllRecipes: {
@@ -11,29 +11,23 @@ const {
     getRecipeByCategory,
     searchRecipeByIngredient,
     searchRecipeByTitle,
-
   },
 } = require("../../controllers");
 
 const router = express.Router();
 
-router.get("/", getAll);
+router.get("/", authenticate, getAll);
 
-router.get("/category-list", getCategoryList);
+router.get("/category-list", authenticate, getCategoryList);
 
+router.get("/main-page", authenticate, getRecipesMainPage);
 
-router.get("/main-page", getRecipesMainPage);
+router.get("/category/:category", authenticate, getRecipeByCategory);
 
-router.get("/category/:category", getRecipeByCategory);
+router.get("/id/:id", authenticate, getRecipeById);
 
-router.get("/id/:id", getRecipeById);
+router.get("/search/title/:query", authenticate, searchRecipeByTitle);
 
-router.get("/search/title/:query", searchRecipeByTitle);
-
-router.get("/search/ingredient/:query", searchRecipeByIngredient);
-
-router.get("/search/title/:title", searchRecipeByTitle);
-
-router.get("/search/ingredient/:ingredient", searchRecipeByIngredient);
+router.get("/search/ingredient/:query", authenticate, searchRecipeByIngredient);
 
 module.exports = router;
