@@ -1,24 +1,23 @@
-const { HttpError } = require("../../helpers");
-const { User } = require("../../models/user");
+const { HttpError } = require('../../helpers');
+const { User } = require('../../models/user');
 
 const verifyEmail = async (req, res) => {
-  const { verificationToken } = req.params;
-  console.log(verificationToken);
+    const { verificationToken } = req.params;
 
-  const user = await User.findOne({ verificationToken });
-  console.log(user);
-  if (!user) {
-    throw HttpError(404, `User not found`);
-  }
+    const user = await User.findOne({ verificationToken });
 
-  await User.findByIdAndUpdate(user._id, {
-    verify: true,
-    verificationToken: null,
-  });
+    if (!user) {
+        throw HttpError(404, `User not found`);
+    }
 
-  res.json({
-    message: "Verification successful",
-  });
+    await User.findByIdAndUpdate(user._id, {
+        verify: true,
+        verificationToken: null,
+    });
+
+    res.json({
+        message: 'Verification successful',
+    });
 };
 
 module.exports = verifyEmail;
