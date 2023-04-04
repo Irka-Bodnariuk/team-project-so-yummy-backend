@@ -43,6 +43,63 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    // shoppingList: {
+    //   _id: false,
+    //   type: [
+    //     {
+    //       productId: {
+    //         type: Schema.Types.ObjectId,
+    //         ref: "ingredient",
+    //       },
+    //       measure: {
+    //         type: [String],
+    //         default: [],
+    //       },
+    //     },
+    //   ],
+    //   default: [],
+    // },
+    shoppingList: {
+      _id: false,
+      type: [
+        {
+          productId: {
+            type: String,
+            ref: "ingredient",
+          },
+          measure: {
+            type: [String],
+            default: [],
+          },
+          ttl: {
+            type: String,
+            default: "",
+          },
+          thb: {
+            type: String,
+            default: "",
+          },
+        },
+      ],
+      default: [],
+    },
+    // ingredients: {
+    //   _id: false,
+    //   type: [
+    //     {
+    //       id: {
+    //         type: Schema.Types.ObjectId,
+    //         ref: "ingredient",
+    //         required: true,
+    //       },
+    //       measure: {
+    //         type: String,
+    //         default: "",
+    //       },
+    //     },
+    //   ],
+    //   default: [],
+    // },
   },
   { versionKey: false, timestamps: true }
 );
@@ -68,11 +125,27 @@ const updateSubscribeSchema = Joi.object({
   subscribe: Joi.boolean().required("missing field subscribe"),
 });
 
+// const addIngredientsSchema = Joi.object({
+//   ingredients: Joi.array().items(
+//     Joi.object({
+//       id: Joi.string().custom((value, helpers) => {
+//         if (isValidObjectId(value)) {
+//           return value;
+//         } else {
+//           return helpers.message("Invalid ID");
+//         }
+//       }),
+//       measure: Joi.string().max(200).required(),
+//     })
+//   ),
+// });
+
 const schemas = {
   registerSchema,
   emailSchema,
   loginSchema,
   updateSubscribeSchema,
+  // addIngredientsSchema,
 };
 
 const User = model("user", userSchema);

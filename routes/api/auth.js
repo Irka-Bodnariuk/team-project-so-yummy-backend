@@ -3,7 +3,13 @@ const express = require("express");
 const { validateBody, authenticate, upload } = require("../../middlewares");
 
 const {
-  schemas: { registerSchema, loginSchema, emailSchema, updateSubscribeSchema },
+  schemas: {
+    registerSchema,
+    loginSchema,
+    emailSchema,
+    updateSubscribeSchema,
+    // addIngredientsSchema,
+  },
 } = require("../../models/user");
 
 const {
@@ -16,6 +22,8 @@ const {
     verifyEmail,
     resendVerifyEmail,
     updateSubscribe,
+    allShoppingList,
+    addProductToShoppingList,
   },
 } = require("../../controllers");
 
@@ -41,5 +49,16 @@ router.patch(
   validateBody(updateSubscribeSchema),
   updateSubscribe
 );
+
+router.get("/shopping-list", authenticate, allShoppingList);
+
+router.patch(
+  "/shopping-list",
+  authenticate,
+  // validateBody(addIngredientsSchema),
+  addProductToShoppingList
+);
+
+// router.post("/shopping-list", authenticate, );
 
 module.exports = router;
