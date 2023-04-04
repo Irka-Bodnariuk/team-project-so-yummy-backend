@@ -10,6 +10,9 @@ const getSkipLimitPage = require("./getSkipLimitPage");
 const listRecipeResponse = require("./listRecipeResponse");
 const processPagedRecipesResult = require("./processPagedRecipesResult");
 const getSortTypeByTitleOrPopularity = require("./getSortTypeByTitleOrPopularity");
+const resizeImg = require("./resizeImg");
+const uploadImageToCloudinary = require("./uploadImageToCloudinary");
+const deleteImageFromCloudinary = require("./deleteImageFromCloudinary");
 
 module.exports = {
   HttpError,
@@ -24,4 +27,7 @@ module.exports = {
   listRecipeResponse,
   processPagedRecipesResult,
   getSortTypeByTitleOrPopularity,
+  resizeImg,
+  uploadImageToCloudinary,
+  deleteImageFromCloudinary,
 };

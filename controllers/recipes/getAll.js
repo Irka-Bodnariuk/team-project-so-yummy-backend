@@ -24,7 +24,7 @@ const getAll = async (req, res) => {
 
   const response = processPagedRecipesResult({
     result,
-    // userId: req.user._id
+    userId: req.user._id,
   });
 
   res.json({ ...response, page, limit, sort });
