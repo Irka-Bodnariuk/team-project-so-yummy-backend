@@ -1,3 +1,3 @@
-const { authRouter, recipesRouter, ingredientsRouter } = require("./api");
+const { authRouter, recipesRouter, ingredientsRouter, favoriteRouter } = require("./api");
 
-module.exports = { authRouter, recipesRouter, ingredientsRouter };
+module.exports = { authRouter, recipesRouter, ingredientsRouter, favoriteRouter };
