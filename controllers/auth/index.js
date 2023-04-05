@@ -5,6 +5,7 @@ const login = require("./login");
 const current = require("./current");
 const logout = require("./logout");
 const updateProfile = require("./updateProfile");
+const updateSubscribe = require("./updateSubscribe");
 
 const { ctrlWrapper } = require("../../helpers");
 
@@ -16,4 +17,5 @@ module.exports = {
   current: ctrlWrapper(current),
   logout: ctrlWrapper(logout),
   updateProfile: ctrlWrapper(updateProfile),
+  updateSubscribe: ctrlWrapper(updateSubscribe),
 };

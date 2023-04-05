@@ -43,6 +43,10 @@ const userSchema = new Schema(
       type: Array,
       default:[],
     },
+    subscribe: {
+      type: Boolean,
+      default: false,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -64,10 +68,15 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const updateSubscribeSchema = Joi.object({
+  subscribe: Joi.boolean().required("missing field subscribe"),
+});
+
 const schemas = {
   registerSchema,
   emailSchema,
   loginSchema,
+  updateSubscribeSchema,
 };
 
 const User = model("user", userSchema);

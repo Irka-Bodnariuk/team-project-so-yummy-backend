@@ -69,13 +69,13 @@
                 "operationId": "login",
                 "requestBody": {
                     "description": "Login object",
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "$ref": "#components/schemas/UserRequest"
                             }
-                        },
-                        "required": true
+                        }
                     }
                 },
                 "responses": {
@@ -115,8 +115,7 @@
                             "schema": {
                                 "$ref": "#components/schemas/UserRequest"
                             }
-                        },
-                        "required": true
+                        }
                     }
                 },
                 "responses": {
@@ -151,18 +150,232 @@
                 "operationId": "logout",
                 "requestBody": {
                     "description": "Logout object",
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "$ref": "#components/schemas/LogoutRequest"
                             }
-                        },
-                        "required": true
+                        }
                     }
                 },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/auth/verify/{verificationToken}": {
+            "get": {
+                "tags": ["auth"],
+                "summary": "Email verify",
+                "description": "Email verify",
+                "operationId": "verifyEmail",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "verificationToken",
+                        "required": true,
+                        "type": "string",
+                        "description": "verification token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verification successful"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/auth/verify": {
+            "post": {
+                "tags": ["auth"],
+                "summary": "Resend email verification",
+                "description": "Resend email verification",
+                "operationId": "resendVerifyEmail",
+                "requestBody": {
+                    "description": "Resend email verification object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@example.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Verification email sent"
+                    },
+                    "400": {
+                        "description": "Invalid email supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/recipes/": {
+            "get": {
+                "tags": ["recipes"],
+                "summary": "Get all recipes",
+                "description": "Get all recipes",
+                "operationId": "getAll",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": true,
+                        "type": "integer",
+                        "description": "Page number"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": true,
+                        "type": "integer",
+                        "description": "Limit of items per page"
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "required": true,
+                        "type": "string",
+                        "description": "Type of sorting"
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string",
+                                            "example": "http://example@example.com"
+                                        },
+                                        "userId": {
+                                            "type": "string",
+                                            "example": "kjn2894391nn95u8fok3n832"
+                                        },
+                                        "page": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "limit": {
+                                            "type": "integer",
+                                            "example": "10"
+                                        },
+                                        "sort": {
+                                            "type": "string",
+                                            "example": "title"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    },
+                    "409": {
+                        "description": "User already exists"
+                    }
+                }
+            }
+        },
+        "/api/recipes/category-list": {
+            "get": {
+                "tags": ["recipes"],
+                "summary": "Get list of categories",
+                "description": "Get list of categories",
+                "operationId": "getCategoryList",
+                "responses": {
+                    "200": {
+                        "description": "Operation successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "Breakfast"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/recipes/main-page": {
+            "get": {
+                "tags": ["recipes"],
+                "summary": "Get recipes from main page",
+                "description": "Get recipes from main page",
+                "operationId": "getRecipesMainPage",
+                "responses": {
+                    "200": {
+                        "description": "Operation successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "Breakfast"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Invalid ID supplied"

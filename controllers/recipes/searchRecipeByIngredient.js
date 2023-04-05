@@ -16,7 +16,7 @@ const searchRecipeByIngredient = async (req, res, next) => {
     throw HttpError(400);
   }
 
-  // const userId = req.user._id;
+  const userId = req.user._id;
 
   const { page: sPage = 1, limit: sLimit = 12, sort: sSort } = req.query;
 
@@ -53,7 +53,7 @@ const searchRecipeByIngredient = async (req, res, next) => {
 
   const response = processPagedRecipesResult({
     result,
-    // userId
+    userId,
   });
 
   res.json({ ...response, page, limit, sort });
