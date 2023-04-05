@@ -5,6 +5,7 @@ const { HttpError } = require("../../helpers");
 const updateProfile = async (req, res) => {
   const { name } = req.body;
   const { _id } = req.user;
+
   if (!req.file && name) {
     await User.findByIdAndUpdate(_id, { name });
     res.json({

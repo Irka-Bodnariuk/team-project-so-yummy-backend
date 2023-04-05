@@ -41,11 +41,35 @@ const userSchema = new Schema(
     },
     favorites: {
       type: Array,
-      default:[],
+      default: [],
     },
     subscribe: {
       type: Boolean,
       default: false,
+    },
+    shoppingList: {
+      _id: false,
+      type: [
+        {
+          productId: {
+            type: String,
+            ref: "ingredient",
+          },
+          measure: {
+            type: [String],
+            default: [],
+          },
+          ttl: {
+            type: String,
+            default: "",
+          },
+          thb: {
+            type: String,
+            default: "",
+          },
+        },
+      ],
+      default: [],
     },
     motivations: {
       _id: false,
@@ -93,11 +117,17 @@ const updateSubscribeSchema = Joi.object({
   subscribe: Joi.boolean().required("missing field subscribe"),
 });
 
+const addShoppingListSchema = Joi.object({
+  productId: Joi.string().required(),
+  measure: Joi.string().max(200).required(),
+});
+
 const schemas = {
   registerSchema,
   emailSchema,
   loginSchema,
   updateSubscribeSchema,
+  addShoppingListSchema,
 };
 
 const User = model("user", userSchema);
