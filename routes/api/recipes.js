@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { authenticate } = require("../../middlewares");
+const { authenticate, isValidId } = require("../../middlewares");
 
 const {
   ctrllRecipes: {
@@ -11,6 +11,8 @@ const {
     getRecipeByCategory,
     searchRecipeByIngredient,
     searchRecipeByTitle,
+    updateFavoriteById,
+    updateLikeById,
   },
 } = require("../../controllers");
 
@@ -29,5 +31,9 @@ router.get("/id/:id", authenticate, getRecipeById);
 router.get("/search/title/:query", authenticate, searchRecipeByTitle);
 
 router.get("/search/ingredient/:query", authenticate, searchRecipeByIngredient);
+
+router.patch("/favorite/:id", authenticate, isValidId, updateFavoriteById);
+
+router.patch("/like/:id", authenticate, isValidId, updateLikeById);
 
 module.exports = router;
