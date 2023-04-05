@@ -3,6 +3,7 @@ const {
   recipesRouter,
   ingredientsRouter,
   ownRecipesRouter,
+  favoriteRouter,
 } = require("./api");
 
 module.exports = {
@@ -10,4 +11,5 @@ module.exports = {
   recipesRouter,
   ingredientsRouter,
   ownRecipesRouter,
+  favoriteRouter,
 };
