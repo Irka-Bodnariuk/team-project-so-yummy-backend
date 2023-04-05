@@ -13,6 +13,7 @@ const getSortTypeByTitleOrPopularity = require("./getSortTypeByTitleOrPopularity
 const resizeImg = require("./resizeImg");
 const uploadImageToCloudinary = require("./uploadImageToCloudinary");
 const deleteImageFromCloudinary = require("./deleteImageFromCloudinary");
+const toggleFavoriteLikeState = require("./toggleFavoriteLikeState");
 
 module.exports = {
   HttpError,
@@ -30,4 +31,5 @@ module.exports = {
   resizeImg,
   uploadImageToCloudinary,
   deleteImageFromCloudinary,
+  toggleFavoriteLikeState,
 };

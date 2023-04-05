@@ -24,6 +24,7 @@ const deleteOwnById = async (req, res) => {
       console.log(error.message);
     }
   }
+
   await OwnRecipe.findByIdAndDelete(id);
   req.user.ownRecipesNumber = req.user.ownRecipesNumber - 1;
   req.user.save();
