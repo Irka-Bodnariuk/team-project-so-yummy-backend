@@ -3,38 +3,33 @@ const listRecipeResponse = (response, userId) => {
     const {
       _id,
       title,
-      tags,
       category,
-      area,
       preview,
       instructions,
       time,
-      popularity,
-      likes,
       favorites,
       description,
       thumb,
-      ingredients,
-      youtube,
+      likes,
     } = recipe;
     const favorite = favorites?.some((id) => String(id) === String(userId));
     const like = likes?.some((id) => String(id) === String(userId));
     return {
       _id,
       title,
-      tags,
+      // tags,
       category,
-      area,
+      // area,
       description,
       instructions,
       preview,
       thumb,
       time,
-      popularity,
+      // popularity,
       like,
       favorite,
-      ingredients,
-      youtube,
+      // ingredients,
+      // youtube,
     };
   });
   return recipes;

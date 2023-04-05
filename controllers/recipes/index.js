@@ -5,7 +5,8 @@ const getRecipeById = require("./getRecipeById");
 const getRecipeByCategory = require("./getRecipeByCategory");
 const searchRecipeByIngredient = require("./searchRecipeByIngredient");
 const searchRecipeByTitle = require("./searchRecipeByTitle");
-
+const updateFavoriteById = require("./updateFavoriteById");
+const updateLikeById = require("./updateLikeById");
 
 const { ctrlWrapper } = require("../../helpers");
 
@@ -17,5 +18,6 @@ module.exports = {
   getRecipeByCategory: ctrlWrapper(getRecipeByCategory),
   searchRecipeByIngredient: ctrlWrapper(searchRecipeByIngredient),
   searchRecipeByTitle: ctrlWrapper(searchRecipeByTitle),
-
+  updateFavoriteById: ctrlWrapper(updateFavoriteById),
+  updateLikeById: ctrlWrapper(updateLikeById),
 };

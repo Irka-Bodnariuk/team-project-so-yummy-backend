@@ -30,12 +30,13 @@ const ownRecipeSchema = new Schema(
     preview: {
       type: String,
     },
-    fullImg: {
-      type: String,
-    },
     time: {
       type: String,
       default: "",
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
     },
     ingredients: {
       _id: false,

@@ -1,4 +1,5 @@
 const { OwnRecipe } = require("../../models/ownRecipe");
+const { User } = require("../../models/user");
 const {
   HttpError,
   resizeImg,
@@ -6,6 +7,16 @@ const {
 } = require("../../helpers");
 
 const addOwnRecipe = async (req, res) => {
+  const ownRecipesNumber = await OwnRecipe.countDocuments({
+    owner: { $in: [req.user._id] },
+  });
+  if (ownRecipesNumber >= 20) {
+    throw HttpError(
+      403,
+      "You have reached the maximum number of your recipes 30"
+    );
+  }
+
   const {
     title,
     category,
@@ -15,13 +26,15 @@ const addOwnRecipe = async (req, res) => {
     ingredients,
     description,
   } = req.body;
-  // If first recipe is being adding to recipe list - send motivation 'first'
-  // let motivation;
-  // if (req.user.motivations.addFirstOwnRecipe) {
-  //   req.user.motivations.addFirstOwnRecipe = true;
-  //   await req.user.save();
-  //   motivation = "first";
-  // }
+
+  let motivation;
+  if (!req.user.motivations?.addFirstOwnRecipe) {
+    await User.findByIdAndUpdate(req.user._id, {
+      motivations: { addFirstOwnRecipe: true },
+    });
+    motivation = "first";
+  }
+
   if (req.file) {
     let newRecipe;
     const createRecipeAndSavePreviewUrl = async (result) => {
@@ -38,12 +51,17 @@ const addOwnRecipe = async (req, res) => {
         owner: req.user._id,
       });
       if (newRecipe) {
+        if (!req.user.ownRecipesNumber) {
+          await User.findByIdAndUpdate(req.user._id, {
+            ownRecipesNumber: 1,
+          });
+        }
         req.user.ownRecipesNumber = req.user.ownRecipesNumber + 1;
         req.user.save();
-        res.json({
+        res.status(201).json({
           id: newRecipe._id,
           message: `Recipe ${newRecipe._id} has been created`,
-          // motivation,
+          motivation,
         });
       } else {
         throw HttpError(400, " An error occured");
@@ -71,15 +89,21 @@ const addOwnRecipe = async (req, res) => {
       time,
       favorite,
       ingredients,
+      description,
       owner: req.user._id,
     });
     if (newRecipe) {
+      if (!req.user.ownRecipesNumber) {
+        await User.findByIdAndUpdate(req.user._id, {
+          ownRecipesNumber: 1,
+        });
+      }
       req.user.ownRecipesNumber = req.user.ownRecipesNumber + 1;
       req.user.save();
-      res.json({
+      res.status(201).json({
         id: newRecipe._id,
         message: `Recipe ${newRecipe._id} has been created`,
-        // motivation,
+        motivation,
       });
     } else {
       throw HttpError(400, " An error occured");
@@ -92,12 +116,11 @@ module.exports = addOwnRecipe;
 // {
 //     "title": "Honey Teriyaki",
 //     "category": "Seafood",
+//     "description": "A Japanese-inspired dish made with salmon fillets, teriyaki sauce, hon…"
 //     "instructions": "Mix all the ingredients in the Honey Teriyaki Glaze together. Whisk to…",
 //     "time": "25",
-//     "favorite": true,
 //     "ingredients": [{
-//          "id": "640c2dd963a319ea671e369b",
 //          "measure": "1 tablespoon"
 //     }],
-//     "description": "A Japanese-inspired dish made with salmon fillets, teriyaki sauce, hon…"
+
 // }

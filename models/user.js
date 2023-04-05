@@ -37,7 +37,11 @@ const userSchema = new Schema(
     verificationToken: {
       type: String,
       default: null,
-      required: true,
+      // required: [true, "Verify token is required"],
+    },
+    favorites: {
+      type: Array,
+      default: [],
     },
     subscribe: {
       type: Boolean,
@@ -66,6 +70,27 @@ const userSchema = new Schema(
         },
       ],
       default: [],
+    },
+    motivations: {
+      _id: false,
+      type: {
+        createShoppingList: {
+          type: Boolean,
+          default: false,
+        },
+        addRecipesToFavorite: {
+          type: Number,
+          default: 0,
+        },
+        addFirstOwnRecipe: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    },
+    ownRecipesNumber: {
+      type: Number,
+      default: 0,
     },
   },
   { versionKey: false, timestamps: true }
