@@ -2,8 +2,8 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
-const swaggerUi = require("swagger-ui-express");
 
+const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
 const {
@@ -12,6 +12,8 @@ const {
   recipesRouter,
   favoriteRouter,
   ownRecipesRouter,
+  subscribeRouter,
+  shoppingListRouter,
 } = require("./routes");
 
 const app = express();
@@ -34,6 +36,10 @@ app.use("/api/recipes", recipesRouter);
 app.use("/api/favorite", favoriteRouter);
 
 app.use("/api/own-recipes", ownRecipesRouter);
+
+app.use("/api/shopping-list", shoppingListRouter);
+
+app.use("/api/subscribe", subscribeRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

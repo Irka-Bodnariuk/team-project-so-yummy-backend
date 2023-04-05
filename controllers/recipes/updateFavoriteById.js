@@ -1,4 +1,5 @@
 const { Recipe } = require("../../models/recipes");
+const { User } = require("../../models/user");
 const toggleFavoriteLikeState = require("../../helpers/toggleFavoriteLikeState");
 
 const updateFavoriteById = async (req, res) => {
@@ -14,6 +15,13 @@ const updateFavoriteById = async (req, res) => {
 
   // Check conditions for motivation send
   let motivation;
+  if (!req.user.motivations?.addRecipesToFavorite) {
+    await User.findByIdAndUpdate(req.user._id, {
+      motivations: { addRecipesToFavorite: 0 },
+    });
+    motivation = "first";
+  }
+
   if (req.user.motivations?.addRecipesToFavorite < 10) {
     // count and save total user favorites recipes
     const totalFavorites = await Recipe.find({
