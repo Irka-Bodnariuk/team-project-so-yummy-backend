@@ -9,7 +9,6 @@ const getRecipeById = async (req, res, next) => {
     model: Ingredients,
   });
 
-  console.log(result);
   if (!result || result === []) {
     throw HttpError(404, `Recipe with ${id} was not found`);
   }

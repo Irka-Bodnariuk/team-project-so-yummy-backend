@@ -47,6 +47,27 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    motivations: {
+      _id: false,
+      type: {
+        createShoppingList: {
+          type: Boolean,
+          default: false,
+        },
+        addRecipesToFavorite: {
+          type: Number,
+          default: 0,
+        },
+        addFirstOwnRecipe: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    },
+    ownRecipesNumber: {
+      type: Number,
+      default: 0,
+    },
   },
   { versionKey: false, timestamps: true }
 );
