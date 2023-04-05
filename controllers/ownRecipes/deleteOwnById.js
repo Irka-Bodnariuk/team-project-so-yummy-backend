@@ -3,6 +3,7 @@ const { HttpError, deleteImageFromCloudinary } = require("../../helpers");
 
 const deleteOwnById = async (req, res) => {
   const { id } = req.params;
+
   const recipe = await OwnRecipe.findById(id);
   if (!recipe) {
     throw HttpError(404, `Recipe with ID ${id} was not found`);

@@ -8,6 +8,7 @@ const updateProfile = require("./updateProfile");
 const updateSubscribe = require("./updateSubscribe");
 const allShoppingList = require("./allShoppingList");
 const addProductToShoppingList = require("./addProductToShoppingList");
+const deleteProductFromShoppingList = require("./deleteProductFromShoppingList");
 
 const { ctrlWrapper } = require("../../helpers");
 
@@ -22,4 +23,5 @@ module.exports = {
   updateSubscribe: ctrlWrapper(updateSubscribe),
   allShoppingList: ctrlWrapper(allShoppingList),
   addProductToShoppingList: ctrlWrapper(addProductToShoppingList),
+  deleteProductFromShoppingList: ctrlWrapper(deleteProductFromShoppingList),
 };

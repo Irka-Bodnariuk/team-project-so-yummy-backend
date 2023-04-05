@@ -1,6 +1,11 @@
 const express = require("express");
 
-const { validateBody, authenticate, upload } = require("../../middlewares");
+const {
+  validateBody,
+  authenticate,
+  upload,
+  isValidId,
+} = require("../../middlewares");
 
 const {
   schemas: {
@@ -8,7 +13,7 @@ const {
     loginSchema,
     emailSchema,
     updateSubscribeSchema,
-    // addIngredientsSchema,
+    addShoppingListSchema,
   },
 } = require("../../models/user");
 
@@ -24,6 +29,7 @@ const {
     updateSubscribe,
     allShoppingList,
     addProductToShoppingList,
+    deleteProductFromShoppingList,
   },
 } = require("../../controllers");
 
@@ -55,10 +61,15 @@ router.get("/shopping-list", authenticate, allShoppingList);
 router.patch(
   "/shopping-list",
   authenticate,
-  // validateBody(addIngredientsSchema),
+  validateBody(addShoppingListSchema),
   addProductToShoppingList
 );
 
-// router.post("/shopping-list", authenticate, );
+router.patch(
+  "/shopping-list/:productId",
+  authenticate,
+  // isValidId,
+  deleteProductFromShoppingList
+);
 
 module.exports = router;

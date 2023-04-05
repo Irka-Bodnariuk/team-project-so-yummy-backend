@@ -83,23 +83,6 @@ const userSchema = new Schema(
       ],
       default: [],
     },
-    // ingredients: {
-    //   _id: false,
-    //   type: [
-    //     {
-    //       id: {
-    //         type: Schema.Types.ObjectId,
-    //         ref: "ingredient",
-    //         required: true,
-    //       },
-    //       measure: {
-    //         type: String,
-    //         default: "",
-    //       },
-    //     },
-    //   ],
-    //   default: [],
-    // },
   },
   { versionKey: false, timestamps: true }
 );
@@ -125,27 +108,17 @@ const updateSubscribeSchema = Joi.object({
   subscribe: Joi.boolean().required("missing field subscribe"),
 });
 
-// const addIngredientsSchema = Joi.object({
-//   ingredients: Joi.array().items(
-//     Joi.object({
-//       id: Joi.string().custom((value, helpers) => {
-//         if (isValidObjectId(value)) {
-//           return value;
-//         } else {
-//           return helpers.message("Invalid ID");
-//         }
-//       }),
-//       measure: Joi.string().max(200).required(),
-//     })
-//   ),
-// });
+const addShoppingListSchema = Joi.object({
+  productId: Joi.string().required(),
+  measure: Joi.string().max(200).required(),
+});
 
 const schemas = {
   registerSchema,
   emailSchema,
   loginSchema,
   updateSubscribeSchema,
-  // addIngredientsSchema,
+  addShoppingListSchema,
 };
 
 const User = model("user", userSchema);

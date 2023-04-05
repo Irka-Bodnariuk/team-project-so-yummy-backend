@@ -1,16 +1,14 @@
-const { User } = require("../../models/user");
+const { HttpError } = require("../../helpers");
 
 const allShoppingList = async (req, res) => {
-  const { ingredients } = req.user;
+  const { shoppingList } = req.user;
+  if (!shoppingList) {
+    throw HttpError(404, `No shopping list`);
+  }
 
   res.json({
-    ingredients,
+    shoppingList,
   });
 };
 
 module.exports = allShoppingList;
-
-// "ingredients": [{
-//          "id": "640c2dd963a319ea671e369b",
-//          "measure": "1 tablespoon"
-//     }],
