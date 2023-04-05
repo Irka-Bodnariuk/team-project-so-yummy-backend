@@ -1,20 +1,9 @@
 const express = require("express");
 
-const {
-  validateBody,
-  authenticate,
-  upload,
-  isValidId,
-} = require("../../middlewares");
+const { validateBody, authenticate, upload } = require("../../middlewares");
 
 const {
-  schemas: {
-    registerSchema,
-    loginSchema,
-    emailSchema,
-    updateSubscribeSchema,
-    addShoppingListSchema,
-  },
+  schemas: { registerSchema, loginSchema, emailSchema },
 } = require("../../models/user");
 
 const {
@@ -26,10 +15,6 @@ const {
     updateProfile,
     verifyEmail,
     resendVerifyEmail,
-    updateSubscribe,
-    allShoppingList,
-    addProductToShoppingList,
-    deleteProductFromShoppingList,
   },
 } = require("../../controllers");
 
@@ -48,28 +33,5 @@ router.get("/current", authenticate, current);
 router.post("/logout", authenticate, logout);
 
 router.patch("/profile", authenticate, upload.single("avatar"), updateProfile);
-
-router.patch(
-  "/subscribe",
-  authenticate,
-  validateBody(updateSubscribeSchema),
-  updateSubscribe
-);
-
-router.get("/shopping-list", authenticate, allShoppingList);
-
-router.patch(
-  "/shopping-list",
-  authenticate,
-  validateBody(addShoppingListSchema),
-  addProductToShoppingList
-);
-
-router.patch(
-  "/shopping-list/:productId",
-  authenticate,
-  // isValidId,
-  deleteProductFromShoppingList
-);
 
 module.exports = router;

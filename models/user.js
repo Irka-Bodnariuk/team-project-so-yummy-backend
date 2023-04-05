@@ -37,28 +37,12 @@ const userSchema = new Schema(
     verificationToken: {
       type: String,
       default: null,
-      required: [true, "Verify token is required"],
+      required: true,
     },
     subscribe: {
       type: Boolean,
       default: false,
     },
-    // shoppingList: {
-    //   _id: false,
-    //   type: [
-    //     {
-    //       productId: {
-    //         type: Schema.Types.ObjectId,
-    //         ref: "ingredient",
-    //       },
-    //       measure: {
-    //         type: [String],
-    //         default: [],
-    //       },
-    //     },
-    //   ],
-    //   default: [],
-    // },
     shoppingList: {
       _id: false,
       type: [
