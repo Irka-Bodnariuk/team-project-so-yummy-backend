@@ -1,4 +1,5 @@
-const express = require("express");
+const express = require('express');
+
 
 const { authenticate, isValidId } = require("../../middlewares");
 
@@ -18,19 +19,19 @@ const {
 
 const router = express.Router();
 
-router.get("/", authenticate, getAll);
+router.get('/', authenticate, getAll);
 
-router.get("/category-list", authenticate, getCategoryList);
+router.get('/category-list', authenticate, getCategoryList);
 
-router.get("/main-page", authenticate, getRecipesMainPage);
+router.get('/main-page', authenticate, getRecipesMainPage);
 
-router.get("/category/:category", authenticate, getRecipeByCategory);
+router.get('/category/:category', authenticate, getRecipeByCategory);
 
-router.get("/id/:id", authenticate, getRecipeById);
+router.get('/id/:id', authenticate, getRecipeById);
 
-router.get("/search/title/:query", authenticate, searchRecipeByTitle);
+router.get('/search/title/:query', authenticate, searchRecipeByTitle);
 
-router.get("/search/ingredient/:query", authenticate, searchRecipeByIngredient);
+router.get('/search/ingredient/:query', authenticate, searchRecipeByIngredient);
 
 router.patch("/favorite/:id", authenticate, isValidId, updateFavoriteById);
 

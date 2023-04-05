@@ -11,7 +11,9 @@
         ],
         "tags": [
             { "name": "auth", "description": "Authorization endpoints" },
-            { "name": "recipes", "description": "Recipes endpoints" }
+            { "name": "recipes", "description": "Recipes endpoints" },
+            { "name": "ingredients", "description": "Ingredients endpoints" },
+            { "name": "favorite", "description": "Favorite endpoints" }
         ]
     },
 
@@ -370,8 +372,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "type": "string",
-                                        "example": "Breakfast"
+                                        "$ref": "#components/schemas/Recipe"
                                     }
                                 }
                             }
@@ -382,6 +383,276 @@
                     },
                     "404": {
                         "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/recipes/category/{category}": {
+            "get": {
+                "tags": ["recipes"],
+                "summary": "Get recipes by category",
+                "description": "Get recipes by category",
+                "operationId": "getRecipeByCategory",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "category",
+                        "required": true,
+                        "type": "string",
+                        "description": "category id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/Recipe"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/recipes/id/{id}": {
+            "get": {
+                "tags": ["recipes"],
+                "summary": "Get recipe by id",
+                "description": "Get recipe by id",
+                "operationId": "getRecipeById",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "recipe id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/Recipe"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/recipes/search/ingredient/{query}": {
+            "get": {
+                "tags": ["recipes"],
+                "summary": "Get recipe by ingredient",
+                "description": "Get recipe by ingredient",
+                "operationId": "getRecipeByIngredient",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": true,
+                        "type": "integer",
+                        "description": "Page number"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": true,
+                        "type": "integer",
+                        "description": "Limit of items per page"
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "required": true,
+                        "type": "string",
+                        "description": "Type of sorting"
+                    },
+                    {
+                        "in": "query",
+                        "name": "ingredient.ttl",
+                        "required": true,
+                        "type": "string",
+                        "description": "Title of ingredient"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/Recipe"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/ingredients/list/": {
+            "get": {
+                "tags": ["ingredients"],
+                "summary": "Get all ingrediets",
+                "description": "Get all ingrediets",
+                "operationId": "getAllIngredients",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/Ingredient"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Ingredients not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/favorite/{id}": {
+            "post": {
+                "tags": ["favorite"],
+                "summary": "Add recipe to favorites",
+                "description": "Add recipe to favorites",
+                "operationId": "addFavorite",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Recipe id"
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Recipe is added"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    },
+                    "409": {
+                        "description": "Recipe is already added to user"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["favorite"],
+                "summary": "Remove recipe from favorites",
+                "description": "Remove recipe from favorites",
+                "operationId": "removeFavorite",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Recipe id"
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Recipe is removed"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    },
+                    "409": {
+                        "description": "Recipe is already removed"
+                    }
+                }
+            }
+        },
+        "/api/favorite/": {
+            "get": {
+                "tags": ["favorite"],
+                "summary": "Get favorite recipes",
+                "description": "Get favorite recipes",
+                "operationId": "getFavorite",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/Recipe"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Recipes not found"
                     },
                     "405": {
                         "description": "Validation exception"
@@ -448,6 +719,142 @@
                     "id": {
                         "type": "string",
                         "example": "cjhbq742b11kuyqu"
+                    }
+                }
+            },
+            "Recipe": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "example": "640cd5ac2d9fecf12e8897fc"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Spaghetti Bolognese"
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "Beef"
+                    },
+                    "area": {
+                        "type": "string",
+                        "example": "Italian"
+                    },
+                    "instructions": {
+                        "type": "string",
+                        "example": "Put the onion and oil in a large pan and fry over a fairly high heat for 3-4 mins. Add the garlic and mince and fry until they both brown. Add the mushrooms and herbs, and cook for another couple of mins.\r\n\r\nStir in the tomatoes, beef stock, tomato ketchup or purée, Worcestershire sauce and seasoning. Bring to the boil, then reduce the heat, cover and simmer, stirring occasionally, for 30 mins.\r\n\r\nMeanwhile, cook the spaghetti in a large pan of boiling, salted water, according to packet instructions. Drain well, run hot water through it, put it back in the pan and add a dash of olive oil, if you like, then stir in the meat sauce. Serve in hot bowls and hand round Parmesan cheese, for sprinkling on top."
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "An Italian pasta dish made with spaghetti and a meat-based sauce, typically containing beef, tomatoes, onions, garlic, and herbs."
+                    },
+                    "thumb": {
+                        "type": "string",
+                        "example": "https://www.themealdb.com/images/media/meals/sutysw1468247559.jpg"
+                    },
+                    "preview": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/huqdxgwkvbhsfjqtexsm.jpg"
+                    },
+                    "time": { "type": "string", "example": "45" },
+                    "popularity": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "favorites": {
+                        "type": "array",
+                        "example": [
+                            {
+                                "$oid": "640cd5ac2d9fecf12e8897ee"
+                            },
+                            {
+                                "$oid": "640cd5ac2d9fecf12e8897ef"
+                            }
+                        ]
+                    },
+                    "likes": {
+                        "type": "array",
+                        "example": [
+                            {
+                                "$oid": "64133d202bf7d7dccd4f9fd5"
+                            },
+                            {
+                                "$oid": "641807a63c1d9f12cba908c8"
+                            }
+                        ]
+                    },
+                    "youtube": {
+                        "type": "string",
+                        "example": "https://www.youtube.com/watch?v=-gF8d-fitkU"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "example": ["Pasta", "Meat"]
+                    },
+                    "createdAt": {
+                        "type": "object",
+                        "example": {
+                            "$date": {
+                                "$numberLong": "1678562733240"
+                            }
+                        }
+                    },
+
+                    "updatedAt": {
+                        "type": "object",
+                        "example": {
+                            "$date": {
+                                "$numberLong": "1679567316572"
+                            }
+                        }
+                    },
+                    "ingredients": {
+                        "type": "array",
+                        "example": [
+                            {
+                                "id": {
+                                    "$oid": "640c2dd963a319ea671e372e"
+                                },
+                                "measure": "2"
+                            },
+                            {
+                                "id": {
+                                    "$oid": "640c2dd963a319ea671e372c"
+                                },
+                                "measure": "1tbsp"
+                            },
+                            {
+                                "id": {
+                                    "$oid": "640c2dd963a319ea671e36e3"
+                                },
+                                "measure": "1 clove"
+                            }
+                        ]
+                    }
+                }
+            },
+            "Ingredient": {
+                "type": "object",
+                "properties": {
+                    "ttl": {
+                        "type": "string",
+                        "example": "Lemon"
+                    },
+
+                    "desc": {
+                        "type": "string",
+                        "example": "test"
+                    },
+
+                    "thb": {
+                        "type": "string",
+                        "example": "test"
+                    },
+
+                    "t": {
+                        "type": "string",
+                        "example": "test"
                     }
                 }
             }
