@@ -3,7 +3,8 @@
     "info": {
         "title": "Swagger Yummi - OpenAPI 3.0",
         "description": "Swagger documentation for project So Yummi",
-
+        "consumes": ["application/json", "multipart/form-data"],
+        "produces": ["application/json"],
         "servers": [
             {
                 "url": "https://team-project-so-yummy-backend.onrender.com/api/"
@@ -13,7 +14,17 @@
             { "name": "auth", "description": "Authorization endpoints" },
             { "name": "recipes", "description": "Recipes endpoints" },
             { "name": "ingredients", "description": "Ingredients endpoints" },
-            { "name": "favorite", "description": "Favorite endpoints" }
+            { "name": "favorite", "description": "Favorite endpoints" },
+            { "name": "own-recipes", "description": "Own recipes endpoints" },
+            {
+                "name": "shopping-list",
+                "description": "Shopping list endpoints"
+            },
+            { "name": "subscribe", "description": "Subscribe endpoints" },
+            {
+                "name": "popular-recipe",
+                "description": "Popular recipe endpoints"
+            }
         ]
     },
 
@@ -62,7 +73,6 @@
                 }
             }
         },
-
         "/api/auth/login": {
             "post": {
                 "tags": ["auth"],
@@ -103,23 +113,13 @@
                 }
             }
         },
-
         "/api/auth/current": {
             "get": {
                 "tags": ["auth"],
                 "summary": "Get current user",
                 "description": "Get current user",
                 "operationId": "current",
-                "requestBody": {
-                    "description": "Current object",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#components/schemas/UserRequest"
-                            }
-                        }
-                    }
-                },
+                "security": [{ "Bearer": [] }],
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -143,13 +143,13 @@
                 }
             }
         },
-
         "/api/auth/logout": {
             "post": {
                 "tags": ["auth"],
                 "summary": "User logout",
                 "description": "User logout",
                 "operationId": "logout",
+                "security": [{ "Bearer": [] }],
                 "requestBody": {
                     "description": "Logout object",
                     "required": true,
@@ -247,12 +247,76 @@
                 }
             }
         },
+        "/api/auth/profile": {
+            "patch": {
+                "tags": ["auth"],
+                "summary": "Update profile",
+                "description": "Update profile",
+                "operationId": "updateProfile",
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Update profile object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Mike"
+                                    }
+                                }
+                            }
+                        },
+                        "image/png": {
+                            "schema": {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product is removed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "avatarURL": {
+                                            "type": "string",
+                                            "example": "http://example.com/photo"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Mike"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
         "/api/recipes/": {
             "get": {
                 "tags": ["recipes"],
                 "summary": "Get all recipes",
                 "description": "Get all recipes",
                 "operationId": "getAll",
+                "security": [{ "Bearer": [] }],
                 "parameters": [
                     {
                         "in": "query",
@@ -283,28 +347,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "result": {
-                                            "type": "string",
-                                            "example": "http://example@example.com"
-                                        },
-                                        "userId": {
-                                            "type": "string",
-                                            "example": "kjn2894391nn95u8fok3n832"
-                                        },
-                                        "page": {
-                                            "type": "integer",
-                                            "example": "1"
-                                        },
-                                        "limit": {
-                                            "type": "integer",
-                                            "example": "10"
-                                        },
-                                        "sort": {
-                                            "type": "string",
-                                            "example": "title"
-                                        }
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/RecipeResponse"
                                     }
                                 }
                             }
@@ -314,13 +359,10 @@
                         "description": "Invalid ID supplied"
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "Recipes not found"
                     },
                     "405": {
                         "description": "Validation exception"
-                    },
-                    "409": {
-                        "description": "User already exists"
                     }
                 }
             }
@@ -331,6 +373,7 @@
                 "summary": "Get list of categories",
                 "description": "Get list of categories",
                 "operationId": "getCategoryList",
+                "security": [{ "Bearer": [] }],
                 "responses": {
                     "200": {
                         "description": "Operation successful",
@@ -364,6 +407,7 @@
                 "summary": "Get recipes from main page",
                 "description": "Get recipes from main page",
                 "operationId": "getRecipesMainPage",
+                "security": [{ "Bearer": [] }],
                 "responses": {
                     "200": {
                         "description": "Operation successful",
@@ -372,7 +416,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#components/schemas/Recipe"
+                                        "$ref": "#components/schemas/RecipeResponse"
                                     }
                                 }
                             }
@@ -382,7 +426,7 @@
                         "description": "Invalid ID supplied"
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "Recipes not found"
                     },
                     "405": {
                         "description": "Validation exception"
@@ -396,6 +440,7 @@
                 "summary": "Get recipes by category",
                 "description": "Get recipes by category",
                 "operationId": "getRecipeByCategory",
+                "security": [{ "Bearer": [] }],
                 "parameters": [
                     {
                         "in": "path",
@@ -413,7 +458,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#components/schemas/Recipe"
+                                        "$ref": "#components/schemas/RecipeResponse"
                                     }
                                 }
                             }
@@ -437,6 +482,7 @@
                 "summary": "Get recipe by id",
                 "description": "Get recipe by id",
                 "operationId": "getRecipeById",
+                "security": [{ "Bearer": [] }],
                 "parameters": [
                     {
                         "in": "path",
@@ -452,7 +498,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#components/schemas/Recipe"
+                                    "$ref": "#components/schemas/RecipeResponse"
                                 }
                             }
                         }
@@ -475,6 +521,7 @@
                 "summary": "Get recipe by ingredient",
                 "description": "Get recipe by ingredient",
                 "operationId": "getRecipeByIngredient",
+                "security": [{ "Bearer": [] }],
                 "parameters": [
                     {
                         "in": "query",
@@ -511,7 +558,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#components/schemas/Recipe"
+                                    "$ref": "#components/schemas/RecipeResponse"
                                 }
                             }
                         }
@@ -566,13 +613,14 @@
                 "summary": "Add recipe to favorites",
                 "description": "Add recipe to favorites",
                 "operationId": "addFavorite",
+                "security": [{ "Bearer": [] }],
                 "parameters": [
                     {
                         "in": "path",
                         "name": "id",
                         "required": true,
                         "type": "string",
-                        "description": "Recipe id"
+                        "description": "User id"
                     }
                 ],
 
@@ -599,6 +647,7 @@
                 "summary": "Remove recipe from favorites",
                 "description": "Remove recipe from favorites",
                 "operationId": "removeFavorite",
+                "security": [{ "Bearer": [] }],
                 "parameters": [
                     {
                         "in": "path",
@@ -634,6 +683,7 @@
                 "summary": "Get favorite recipes",
                 "description": "Get favorite recipes",
                 "operationId": "getFavorite",
+                "security": [{ "Bearer": [] }],
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -642,7 +692,363 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#components/schemas/Recipe"
+                                        "$ref": "#components/schemas/RecipeResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Recipes not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/own-recipes/": {
+            "get": {
+                "tags": ["own-recipes"],
+                "summary": "Get all own recipes",
+                "description": "Get all own recipes",
+                "operationId": "getOwnRecipes",
+                "security": [{ "Bearer": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/RecipeResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Recipes not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["own-recipes"],
+                "summary": "Add own recipe",
+                "description": "Add own recipe",
+                "operationId": "addOwnRecipe",
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Own recipe object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/RecipeRequest"
+                            }
+                        }
+                    }
+                },
+
+                "responses": {
+                    "201": {
+                        "description": "Recipe 'whisky with cola and vodka' has been created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/RecipeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    },
+                    "409": {
+                        "description": "Recipe already exists"
+                    }
+                }
+            }
+        },
+        "/api/own-recipes/id/{id}": {
+            "get": {
+                "tags": ["own-recipes"],
+                "summary": "Get own recipe by id",
+                "description": "Get own recipe by id",
+                "operationId": "getOwnRecipeById",
+                "security": [{ "Bearer": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "recipe id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/RecipeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["own-recipes"],
+                "summary": "Remove recipe from own recipes",
+                "description": "Remove recipe from own recipes",
+                "operationId": "deleteOwnById",
+                "security": [{ "Bearer": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Recipe id"
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Recipe is removed"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    },
+                    "409": {
+                        "description": "Recipe is already removed"
+                    }
+                }
+            }
+        },
+        "/api/shopping-list/": {
+            "get": {
+                "tags": ["shopping-list"],
+                "summary": "Get shopping list",
+                "description": "Get shopping ist",
+                "operationId": "allShoppingList",
+                "security": [{ "Bearer": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/Ingredient"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Shopping list not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["shopping-list"],
+                "summary": "Add ingredient to shopping list",
+                "description": "Add ingredient to shopping list",
+                "operationId": "addProductToShoppingList",
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Ingredient object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/Ingredient"
+                            }
+                        }
+                    }
+                },
+
+                "responses": {
+                    "200": {
+                        "description": "Recipe is added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/Ingredient"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "No such ingredient"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/shopping-list/{productId}": {
+            "patch": {
+                "tags": ["shopping-list"],
+                "summary": "Remove ingredient from shopping list",
+                "description": "Remove ingredient from shopping list",
+                "operationId": "deleteProductFromShoppingList",
+                "security": [{ "Bearer": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string",
+                        "description": "Product id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product is removed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/Ingredient"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "No such ingredient"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/subscribe/": {
+            "patch": {
+                "tags": ["subscribe"],
+                "summary": "Add subscription",
+                "description": "Add subscription",
+                "operationId": "updateSubscribe",
+                "security": [{ "Bearer": [] }],
+                "requestBody": {
+                    "description": "Toggle subscribe boolean",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "subscribe": {
+                                        "type": "boolean",
+                                        "example": "true"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "You are subscribed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "example": "example@example.com"
+                                        },
+                                        "subscribe": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Email not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/api/popular-recipe/": {
+            "get": {
+                "tags": ["popular-recipe"],
+                "summary": "Get popular recipes",
+                "description": "Get popular recipe",
+                "operationId": "getPopularRecipes",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/RecipeResponse"
                                     }
                                 }
                             }
@@ -722,7 +1128,77 @@
                     }
                 }
             },
-            "Recipe": {
+            "RecipeRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Spaghetti Bolognese"
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "Beef"
+                    },
+                    "area": {
+                        "type": "string",
+                        "example": "Italian"
+                    },
+                    "instructions": {
+                        "type": "string",
+                        "example": "Put the onion and oil in a large pan and fry over a fairly high heat for 3-4 mins. Add the garlic and mince and fry until they both brown. Add the mushrooms and herbs, and cook for another couple of mins.\r\n\r\nStir in the tomatoes, beef stock, tomato ketchup or purée, Worcestershire sauce and seasoning. Bring to the boil, then reduce the heat, cover and simmer, stirring occasionally, for 30 mins.\r\n\r\nMeanwhile, cook the spaghetti in a large pan of boiling, salted water, according to packet instructions. Drain well, run hot water through it, put it back in the pan and add a dash of olive oil, if you like, then stir in the meat sauce. Serve in hot bowls and hand round Parmesan cheese, for sprinkling on top."
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "An Italian pasta dish made with spaghetti and a meat-based sauce, typically containing beef, tomatoes, onions, garlic, and herbs."
+                    },
+                    "thumb": {
+                        "type": "string",
+                        "example": "https://www.themealdb.com/images/media/meals/sutysw1468247559.jpg"
+                    },
+                    "preview": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/huqdxgwkvbhsfjqtexsm.jpg"
+                    },
+                    "time": { "type": "string", "example": "45" },
+                    "popularity": {
+                        "type": "integer",
+                        "example": 2
+                    },
+
+                    "youtube": {
+                        "type": "string",
+                        "example": "https://www.youtube.com/watch?v=-gF8d-fitkU"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "example": ["Pasta", "Meat"]
+                    },
+                    "ingredients": {
+                        "type": "array",
+                        "example": [
+                            {
+                                "id": {
+                                    "$oid": "640c2dd963a319ea671e372e"
+                                },
+                                "measure": "2"
+                            },
+                            {
+                                "id": {
+                                    "$oid": "640c2dd963a319ea671e372c"
+                                },
+                                "measure": "1tbsp"
+                            },
+                            {
+                                "id": {
+                                    "$oid": "640c2dd963a319ea671e36e3"
+                                },
+                                "measure": "1 clove"
+                            }
+                        ]
+                    }
+                }
+            },
+            "RecipeResponse": {
                 "type": "object",
                 "properties": {
                     "_id": {
@@ -844,18 +1320,25 @@
 
                     "desc": {
                         "type": "string",
-                        "example": "test"
+                        "example": "A citrus fruit with a tough, bright orange rind and juicy, pulpy flesh that can be eaten raw or used in cooking and baking."
                     },
 
                     "thb": {
                         "type": "string",
-                        "example": "test"
+                        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564856/pe7f650op8xe8dq8kzkf.png"
                     },
 
                     "t": {
                         "type": "string",
                         "example": "test"
                     }
+                }
+            },
+            "securitySchemes": {
+                "Bearer": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
                 }
             }
         }
