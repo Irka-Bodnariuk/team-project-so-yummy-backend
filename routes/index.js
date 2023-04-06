@@ -6,6 +6,7 @@ const {
   subscribeRouter,
   shoppingListRouter,
   favoriteRouter,
+  popularRouter,
 } = require("./api");
 
 module.exports = {
@@ -16,4 +17,5 @@ module.exports = {
   subscribeRouter,
   shoppingListRouter,
   favoriteRouter,
+  popularRouter,
 };
