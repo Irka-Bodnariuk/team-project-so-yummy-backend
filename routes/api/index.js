@@ -5,6 +5,7 @@ const favoriteRouter = require("./favorite");
 const ownRecipesRouter = require("./ownRecipesRouter");
 const subscribeRouter = require("./subscribe");
 const shoppingListRouter = require("./shoppingList");
+const popularRouter = require('./popular');
 
 module.exports = {
   authRouter,
@@ -14,4 +15,5 @@ module.exports = {
   ownRecipesRouter,
   subscribeRouter,
   shoppingListRouter,
+  popularRouter
 };

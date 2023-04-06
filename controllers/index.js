@@ -3,6 +3,7 @@ const ctrllRecipes = require("./recipes");
 const ctrllIngredienents = require("./ingredienents");
 const ctrllFavorite = require("./favorite");
 const ctrllOwnRecipes = require("./ownRecipes");
+const ctrllPopularRecipes = require('./popular');
 
 module.exports = {
   ctrllUsers,
@@ -10,4 +11,5 @@ module.exports = {
   ctrllIngredienents,
   ctrllFavorite,
   ctrllOwnRecipes,
+  ctrllPopularRecipes,
 };
