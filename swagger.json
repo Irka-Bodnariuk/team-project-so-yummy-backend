@@ -575,6 +575,66 @@
                 }
             }
         },
+        "/api/recipes/search/title/{query}": {
+            "get": {
+                "tags": ["recipes"],
+                "summary": "Get recipe by title",
+                "description": "Get recipe by title",
+                "operationId": "searchRecipeByTitle",
+                "security": [{ "Bearer": [] }],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": true,
+                        "type": "integer",
+                        "description": "Page number"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": true,
+                        "type": "integer",
+                        "description": "Limit of items per page"
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "required": true,
+                        "type": "string",
+                        "description": "Type of sorting"
+                    },
+                    {
+                        "in": "query",
+                        "name": "ingredient.ttl",
+                        "required": true,
+                        "type": "string",
+                        "description": "Title of recipe"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/RecipeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
         "/api/ingredients/list/": {
             "get": {
                 "tags": ["ingredients"],
@@ -754,7 +814,14 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#components/schemas/RecipeRequest"
+                                "$ref": "#components/schemas/RecipeRequest",
+                                "required": true
+                            }
+                        },
+                        "image/png": {
+                            "schema": {
+                                "type": "string",
+                                "format": "binary"
                             }
                         }
                     }
@@ -773,6 +840,9 @@
                     },
                     "400": {
                         "description": "Invalid ID supplied"
+                    },
+                    "403": {
+                        "description": "You have reached the maximum number of your recipes 20"
                     },
                     "404": {
                         "description": "User not found"
@@ -874,7 +944,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#components/schemas/Ingredient"
+                                        "$ref": "#components/schemas/IngredientResponse"
                                     }
                                 }
                             }
@@ -917,7 +987,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#components/schemas/Ingredient"
+                                        "$ref": "#components/schemas/IngredientResponse"
                                     }
                                 }
                             }
@@ -959,7 +1029,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#components/schemas/Ingredient"
+                                        "$ref": "#components/schemas/IngredientResponse"
                                     }
                                 }
                             }
@@ -1331,6 +1401,34 @@
                     "t": {
                         "type": "string",
                         "example": "test"
+                    }
+                }
+            },
+            "IngredientResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "joh39f14njn981jh9ukg324"
+                    },
+                    "ttl": {
+                        "type": "string",
+                        "example": "Lemon"
+                    },
+
+                    "desc": {
+                        "type": "string",
+                        "example": "A citrus fruit with a tough, bright orange rind and juicy, pulpy flesh that can be eaten raw or used in cooking and baking."
+                    },
+
+                    "thb": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564856/pe7f650op8xe8dq8kzkf.png"
+                    },
+
+                    "measure": {
+                        "type": "string",
+                        "example": "1 spoon"
                     }
                 }
             },
