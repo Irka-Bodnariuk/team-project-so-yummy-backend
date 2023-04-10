@@ -4,29 +4,27 @@
         "title": "Swagger Yummi - OpenAPI 3.0",
         "description": "Swagger documentation for project So Yummi",
         "consumes": ["application/json", "multipart/form-data"],
-        "produces": ["application/json"],
-        "servers": [
-            {
-                "url": "https://team-project-so-yummy-backend.onrender.com/api/"
-            }
-        ],
-        "tags": [
-            { "name": "auth", "description": "Authorization endpoints" },
-            { "name": "recipes", "description": "Recipes endpoints" },
-            { "name": "ingredients", "description": "Ingredients endpoints" },
-            { "name": "favorite", "description": "Favorite endpoints" },
-            { "name": "own-recipes", "description": "Own recipes endpoints" },
-            {
-                "name": "shopping-list",
-                "description": "Shopping list endpoints"
-            },
-            { "name": "subscribe", "description": "Subscribe endpoints" },
-            {
-                "name": "popular-recipe",
-                "description": "Popular recipe endpoints"
-            }
-        ]
+        "produces": ["application/json"]
     },
+    "servers": [
+        { "url": "https://team-project-so-yummy-backend.onrender.com/" }
+    ],
+    "tags": [
+        { "name": "auth", "description": "Authorization endpoints" },
+        { "name": "recipes", "description": "Recipes endpoints" },
+        { "name": "ingredients", "description": "Ingredients endpoints" },
+        { "name": "favorite", "description": "Favorite endpoints" },
+        { "name": "own-recipes", "description": "Own recipes endpoints" },
+        {
+            "name": "shopping-list",
+            "description": "Shopping list endpoints"
+        },
+        { "name": "subscribe", "description": "Subscribe endpoints" },
+        {
+            "name": "popular-recipe",
+            "description": "Popular recipe endpoints"
+        }
+    ],
 
     "paths": {
         "/api/auth/register": {
@@ -416,7 +414,18 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#components/schemas/RecipeResponse"
+                                        "example": {
+                                            "_id": {
+                                                "type": "string",
+                                                "example": "Chicken"
+                                            },
+                                            "firstFour": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#components/schemas/RecipeResponse"
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -680,7 +689,7 @@
                         "name": "id",
                         "required": true,
                         "type": "string",
-                        "description": "User id"
+                        "description": "Recipe id"
                     }
                 ],
 
@@ -1431,13 +1440,13 @@
                         "example": "1 spoon"
                     }
                 }
-            },
-            "securitySchemes": {
-                "Bearer": {
-                    "type": "http",
-                    "scheme": "bearer",
-                    "bearerFormat": "JWT"
-                }
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
         }
     }
