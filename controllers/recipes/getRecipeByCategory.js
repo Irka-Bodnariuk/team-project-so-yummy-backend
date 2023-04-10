@@ -10,7 +10,7 @@ const {
 
 const getRecipeByCategory = async (req, res, next) => {
   const { category } = req.params;
-  if (!categoryList.includes(category)) {
+  if (!categoryList.includes(category.toLowerCase())) {
     throw HttpError(400, `Category ${category} not found`);
   }
   const userId = req.user._id;
@@ -23,8 +23,10 @@ const getRecipeByCategory = async (req, res, next) => {
 
   const { sortOpts, sort } = getSortTypeByTitleOrPopularity(sSort);
 
+  const regex = new RegExp(category.trim().toLowerCase(), "i");
+
   const result = await Recipe.aggregate([
-    { $match: { category: category } },
+    { $match: { category: { $regex: regex } } },
     {
       ...getFacetObject({ sortOpts, skip, limit }),
     },
