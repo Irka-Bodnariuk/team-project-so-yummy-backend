@@ -1,5 +1,7 @@
 const { HttpError } = require('../../helpers');
+const { Recipe } = require('../../models/recipes');
 const { User } = require('../../models/user');
+
 
 const getFavorite = async (req, res) => {
     
@@ -10,7 +12,16 @@ const getFavorite = async (req, res) => {
     if (!user) {
         throw HttpError(404, 'User not found');
     };
-    res.json(user.favorites);
+
+    const favoriteRecipes = await Recipe.find({
+        _id: { $in: user.favorites }
+    });
+
+    if (!favoriteRecipes) {
+        throw HttpError(404, 'Recipes not found')
+    }
+
+    res.json(favoriteRecipes);
 
 };
 
