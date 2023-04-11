@@ -30,7 +30,8 @@ const register = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    html: `<a target='_blank' href='${BASE_URL}/api/auth/verify/${verificationToken}'>Click verify email</a>`,
+    // html: `<a target='_blank' href='${BASE_URL}/api/auth/verify/${verificationToken}'>Click verify email</a>`,
+    html: `<a target='_blank' href='https://irka-bodnariuk.github.io/team-project-so-yummy-frontend/signin'>Click verify email</a>`,
   };
 
   await sendEmail(verifyEmail);
@@ -39,6 +40,7 @@ const register = async (req, res) => {
     user: {
       name: result.name,
       email: result.email,
+      verificationToken,
     },
   });
 };
