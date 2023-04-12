@@ -6,8 +6,6 @@ const { User } = require("../../models/user");
 
 const { HttpError, sendEmail } = require("../../helpers");
 
-const { BASE_URL } = process.env;
-
 const register = async (req, res) => {
   const { email, password } = req.body;
 
@@ -17,7 +15,7 @@ const register = async (req, res) => {
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
-  const avatarURL = gravatar.url(email, { s: "200", r: "pg", d: "404" });
+  const avatarURL = gravatar.url(email);
   const verificationToken = nanoid();
 
   const result = await User.create({
@@ -30,7 +28,6 @@ const register = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    // html: `<a target='_blank' href='${BASE_URL}/api/auth/verify/${verificationToken}'>Click verify email</a>`,
     html: `<a target='_blank' href='https://irka-bodnariuk.github.io/team-project-so-yummy-frontend/signin/${verificationToken}'>Click verify email</a>`,
   };
 
