@@ -9,7 +9,7 @@ const ownRecipeSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Set name for recipe"],
+      required: true,
     },
     category: {
       type: String,
