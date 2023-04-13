@@ -2,7 +2,7 @@ const { nanoid } = require("nanoid");
 
 const { CLOUDINARY_KEY, CLOUDINARY_SECRET } = process.env;
 
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: "dwaqddoag",

@@ -11,12 +11,12 @@ const {
 
 const {
   authenticate,
-  // validateBody,
+  validateBody,
   isValidId,
   uploadRecipes,
 } = require("../../middlewares");
 
-// const { schemas } = require("../../models/ownRecipe");
+const { schemas } = require("../../models/ownRecipe");
 
 const router = express.Router();
 
@@ -25,8 +25,8 @@ router.get("/", authenticate, getOwnRecipes);
 router.post(
   "/",
   authenticate,
-  uploadRecipes.single("fullImage"),
-  // validateBody(schemas.addSchema),
+  uploadRecipes.single("preview"),
+  validateBody(schemas.addSchema),
   addOwnRecipe
 );
 

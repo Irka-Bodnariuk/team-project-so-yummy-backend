@@ -22,7 +22,6 @@ const ownRecipeSchema = new Schema(
     },
     instructions: {
       type: String,
-      required: true,
     },
     thumb: {
       type: String,

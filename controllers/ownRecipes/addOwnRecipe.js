@@ -38,7 +38,8 @@ const addOwnRecipe = async (req, res) => {
   if (req.file) {
     let newRecipe;
     const createRecipeAndSavePreviewUrl = async (result) => {
-      const preview = req.file;
+      const preview = result.secure_url;
+
       newRecipe = await OwnRecipe.create({
         title,
         category,
@@ -61,6 +62,7 @@ const addOwnRecipe = async (req, res) => {
         res.status(201).json({
           id: newRecipe._id,
           message: `Recipe ${newRecipe.title} has been created`,
+          preview,
           motivation,
         });
       } else {
@@ -69,7 +71,7 @@ const addOwnRecipe = async (req, res) => {
     };
     try {
       const preview = await resizeImg({
-        body: req.file.path,
+        body: req.file,
         width: 350,
         height: 350,
       });
