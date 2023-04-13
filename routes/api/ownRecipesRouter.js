@@ -13,7 +13,7 @@ const {
   authenticate,
   validateBody,
   isValidId,
-  upload,
+  uploadRecipes,
 } = require("../../middlewares");
 
 const { schemas } = require("../../models/ownRecipe");
@@ -25,7 +25,7 @@ router.get("/", authenticate, getOwnRecipes);
 router.post(
   "/",
   authenticate,
-  upload.single("fullImage"),
+  uploadRecipes.single("preview"),
   validateBody(schemas.addSchema),
   addOwnRecipe
 );
