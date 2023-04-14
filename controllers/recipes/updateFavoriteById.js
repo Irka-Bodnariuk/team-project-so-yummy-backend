@@ -1,5 +1,6 @@
 const { Recipe } = require("../../models/recipes");
 const { User } = require("../../models/user");
+
 const toggleFavoriteLikeState = require("../../helpers/toggleFavoriteLikeState");
 
 const updateFavoriteById = async (req, res) => {
@@ -12,6 +13,16 @@ const updateFavoriteById = async (req, res) => {
     req,
     Model: Recipe,
   });
+
+  // const user = await User.findById({ req._id });
+
+  // if (!user) {
+  //   throw HttpError(404, "User not found");
+  // }
+
+  // if (user.favorites.includes(id)) {
+  //   throw HttpError(409, "Recipe is already added to user");
+  // }
 
   // Check conditions for motivation send
   let motivation;
@@ -33,6 +44,7 @@ const updateFavoriteById = async (req, res) => {
       motivation = "10";
     }
   }
+
   res.status(200).json({ _id, favorite, popularity, motivation });
 };
 
