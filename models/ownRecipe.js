@@ -5,6 +5,18 @@ const Joi = require("joi");
 const { handleMongooseError } = require("../helpers");
 const categoryList = require("../recipesCategory/categoryList");
 
+const ingredientSchema = Schema({
+  id: {
+    type: String,
+  },
+  measure: {
+    type: String,
+    default: "",
+  },
+
+  _id: false,
+});
+
 const ownRecipeSchema = new Schema(
   {
     title: {
@@ -34,10 +46,7 @@ const ownRecipeSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    ingredients: {
-      type: String,
-      default: "",
-    },
+    ingredients: [ingredientSchema],
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
@@ -49,6 +58,11 @@ const ownRecipeSchema = new Schema(
 
 ownRecipeSchema.post("save", handleMongooseError);
 
+const objectSchema = Joi.object({
+  id: Joi.string().required(),
+  measure: Joi.string().required(),
+});
+
 const addSchema = Joi.object({
   title: Joi.string().min(2).max(200).required(),
   category: Joi.string()
@@ -58,7 +72,7 @@ const addSchema = Joi.object({
   instructions: Joi.string().required(),
   time: Joi.string().required(),
   favorite: Joi.boolean().default(false),
-  ingredients: Joi.string().required(),
+  ingredients: Joi.array().items(objectSchema),
 });
 
 const schemas = {

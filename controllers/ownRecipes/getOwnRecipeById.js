@@ -8,17 +8,17 @@ const getOwnRecipeById = async (req, res) => {
     path: "ingredients.id",
     model: Ingredients,
   });
+  console.log(result);
   if (!result) {
     throw HttpError(404, `Recipe with ${id} was not found`);
   }
 
-  result.ingredients.forEach((ingr) => {
-    ingr.title = ingr.id.ttl;
-    ingr.desc = ingr.id.desc;
-    ingr.thumb = ingr.id.thb;
-    ingr._id = ingr.id._id;
-    delete ingr.id;
-  });
+  // result.ingredients.forEach((ingr) => {
+  //   ingr.title = ingr.id.ttl;
+  //   ingr.desc = ingr.id.desc;
+  //   ingr._id = ingr.id._id;
+  //   delete ingr.id;
+  // });
 
   const {
     _id,
@@ -26,11 +26,13 @@ const getOwnRecipeById = async (req, res) => {
     category,
     description,
     instructions,
-    fullImg,
     time,
     ingredients,
     preview,
+    favorite,
+    owner,
   } = result;
+
   res.json({
     _id,
     title,
@@ -40,7 +42,8 @@ const getOwnRecipeById = async (req, res) => {
     ingredients,
     time,
     preview,
-    fullImg,
+    owner,
+    favorite,
   });
 };
 
