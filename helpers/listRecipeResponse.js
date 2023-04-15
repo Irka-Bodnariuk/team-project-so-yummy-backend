@@ -9,7 +9,6 @@ const listRecipeResponse = (response, userId) => {
       time,
       favorites,
       description,
-      thumb,
       likes,
     } = recipe;
     const favorite = favorites?.some((id) => String(id) === String(userId));
@@ -23,7 +22,6 @@ const listRecipeResponse = (response, userId) => {
       description,
       instructions,
       preview,
-      thumb,
       time,
       // popularity,
       like,
