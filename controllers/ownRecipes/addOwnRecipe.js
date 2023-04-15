@@ -114,15 +114,3 @@ const addOwnRecipe = async (req, res) => {
 };
 
 module.exports = addOwnRecipe;
-
-// {
-//     "title": "Honey Teriyaki",
-//     "category": "Seafood",
-//     "description": "A Japanese-inspired dish made with salmon fillets, teriyaki sauce, hon…"
-//     "instructions": "Mix all the ingredients in the Honey Teriyaki Glaze together. Whisk to…",
-//     "time": "25",
-//     "ingredients": [{
-//          "measure": "1 tablespoon"
-//     }],
-
-// }
