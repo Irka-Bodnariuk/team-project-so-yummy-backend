@@ -12,35 +12,28 @@ const getOwnRecipeById = async (req, res) => {
     throw HttpError(404, `Recipe with ${id} was not found`);
   }
 
-  result.ingredients.forEach((ingr) => {
-    ingr.title = ingr.id.ttl;
-    ingr.desc = ingr.id.desc;
-    ingr.thumb = ingr.id.thb;
-    ingr._id = ingr.id._id;
-    delete ingr.id;
-  });
-
   const {
     _id,
     title,
     category,
     description,
     instructions,
-    fullImg,
     time,
     ingredients,
     preview,
   } = result;
+
+  const ingredientsParse = JSON.parse(ingredients);
+
   res.json({
     _id,
     title,
     category,
     description,
     instructions,
-    ingredients,
+    ingredientsParse,
     time,
     preview,
-    fullImg,
   });
 };
 

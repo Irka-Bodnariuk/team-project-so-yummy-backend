@@ -5,7 +5,6 @@ const {
   resizeImg,
   uploadImageToCloudinary,
 } = require("../../helpers");
-const { json } = require("express");
 
 const addOwnRecipe = async (req, res) => {
   const ownRecipesNumber = await OwnRecipe.countDocuments({
@@ -48,7 +47,7 @@ const addOwnRecipe = async (req, res) => {
         description,
         time,
         favorite,
-        ingredients: JSON.parse(ingredients),
+        ingredients,
         preview,
         owner: req.user._id,
       });
@@ -91,7 +90,7 @@ const addOwnRecipe = async (req, res) => {
       instructions,
       time,
       favorite,
-      ingredients: JSON.parse(ingredients),
+      ingredients,
       description,
       owner: req.user._id,
     });
@@ -115,15 +114,3 @@ const addOwnRecipe = async (req, res) => {
 };
 
 module.exports = addOwnRecipe;
-
-// {
-//     "title": "Honey Teriyaki",
-//     "category": "Seafood",
-//     "description": "A Japanese-inspired dish made with salmon fillets, teriyaki sauce, hon…"
-//     "instructions": "Mix all the ingredients in the Honey Teriyaki Glaze together. Whisk to…",
-//     "time": "25",
-//     "ingredients": [{
-//          "measure": "1 tablespoon"
-//     }],
-
-// }
