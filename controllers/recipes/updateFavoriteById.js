@@ -11,6 +11,7 @@ const updateFavoriteById = async (req, res) => {
     type: "favorites",
     req,
     Model: Recipe,
+    ModelU: User,
   });
 
   // Check conditions for motivation send
