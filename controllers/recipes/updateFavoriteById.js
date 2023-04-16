@@ -14,7 +14,6 @@ const updateFavoriteById = async (req, res) => {
     ModelU: User,
   });
 
-  // Check conditions for motivation send
   let motivation;
   if (!req.user.motivations?.addRecipesToFavorite) {
     await User.findByIdAndUpdate(req.user._id, {
@@ -24,7 +23,6 @@ const updateFavoriteById = async (req, res) => {
   }
 
   if (req.user.motivations?.addRecipesToFavorite < 10) {
-    // count and save total user favorites recipes
     const totalFavorites = await Recipe.find({
       favorites: { $in: [req.user._id] },
     }).count();
