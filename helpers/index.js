@@ -1,23 +1,35 @@
 const HttpError = require("./HttpError");
 const ctrlWrapper = require("./ctrlWrapper");
 const handleMongooseError = require("./handleMongooseError");
+
 const sendEmail = require("./sendEmail");
-const facetObject = require("./facetObject");
-const regexByKeywords = require("./regexByKeywords");
-const limitPage = require("./limitPage");
-const pagedResult = require("./pagedResult");
-const sortType = require("./sortType");
-const toCloudinary = require("./toCloudinary");
+
+const getFacetObject = require("./getFacetObject");
+const getRegexForSearchByKeywords = require("./getRegexForSearchByKeywords");
+const getSkipLimitPage = require("./getSkipLimitPage");
+const listRecipeResponse = require("./listRecipeResponse");
+const processPagedRecipesResult = require("./processPagedRecipesResult");
+const getSortTypeByTitleOrPopularity = require("./getSortTypeByTitleOrPopularity");
+const resizeImg = require("./resizeImg");
+const uploadImageToCloudinary = require("./uploadImageToCloudinary");
+const deleteImageFromCloudinary = require("./deleteImageFromCloudinary");
+const toggleFavoriteLikeState = require("./toggleFavoriteLikeState");
 
 module.exports = {
   HttpError,
   ctrlWrapper,
   handleMongooseError,
+
   sendEmail,
-  facetObject,
-  regexByKeywords,
-  limitPage,
-  pagedResult,
-  sortType,
-  toCloudinary,
+
+  getFacetObject,
+  getRegexForSearchByKeywords,
+  getSkipLimitPage,
+  listRecipeResponse,
+  processPagedRecipesResult,
+  getSortTypeByTitleOrPopularity,
+  resizeImg,
+  uploadImageToCloudinary,
+  deleteImageFromCloudinary,
+  toggleFavoriteLikeState,
 };

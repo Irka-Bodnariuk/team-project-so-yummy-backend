@@ -2,10 +2,10 @@ const { Recipe } = require("../../models/recipes");
 const categoryList = require("../../recipesCategory");
 const {
   HttpError,
-  limitPage,
-  sortType,
-  facetObject,
-  pagedResult,
+  getSkipLimitPage,
+  getSortTypeByTitleOrPopularity,
+  getFacetObject,
+  processPagedRecipesResult,
 } = require("../../helpers");
 
 const getRecipeByCategory = async (req, res, next) => {
@@ -15,24 +15,24 @@ const getRecipeByCategory = async (req, res, next) => {
   }
   const userId = req.user._id;
 
-  const { page: sp = 1, limit: sl = 8, sort: ss } = req.query;
-  const { skip, limit, page } = limitPage({
-    page: sp,
-    limit: sl,
+  const { page: sPage = 1, limit: sLimit = 8, sort: sSort } = req.query;
+  const { skip, limit, page } = getSkipLimitPage({
+    page: sPage,
+    limit: sLimit,
   });
 
-  const { sortOpts, sort } = sortType(ss);
+  const { sortOpts, sort } = getSortTypeByTitleOrPopularity(sSort);
 
   const regex = new RegExp(category.trim().toLowerCase(), "i");
 
   const result = await Recipe.aggregate([
     { $match: { category: { $regex: regex } } },
     {
-      ...facetObject({ sortOpts, skip, limit }),
+      ...getFacetObject({ sortOpts, skip, limit }),
     },
   ]);
 
-  const response = pagedResult({
+  const response = processPagedRecipesResult({
     result,
     userId,
   });

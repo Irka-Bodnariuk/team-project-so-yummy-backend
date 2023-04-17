@@ -1,7 +1,7 @@
 const { Recipe } = require("../../models/recipes");
 const { listRecipeResponse } = require("../../helpers");
 
-const getMainPage = async (req, res, next) => {
+const getRecipesMainPage = async (req, res, next) => {
   const options = [
     { $sample: { size: 4 } },
     { $limit: 4 },
@@ -9,6 +9,10 @@ const getMainPage = async (req, res, next) => {
       $project: {
         createdAt: 0,
         updatedAt: 0,
+        ingredients: 0,
+        area: 0,
+        tags: 0,
+        thumb: 0,
       },
     },
   ];
@@ -39,4 +43,4 @@ const getMainPage = async (req, res, next) => {
   res.status(200).json({ result });
 };
 
-module.exports = getMainPage;
+module.exports = getRecipesMainPage;

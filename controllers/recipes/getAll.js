@@ -1,28 +1,28 @@
 const { Recipe } = require("../../models/recipes");
 const {
-  limitPage,
-  sortType,
-  pagedResult,
-  facetObject,
+  getSkipLimitPage,
+  getSortTypeByTitleOrPopularity,
+  processPagedRecipesResult,
+  getFacetObject,
 } = require("../../helpers");
 
 const getAll = async (req, res) => {
-  const { page: pg = 1, limit: sl = 20, sort: ss } = req.query;
+  const { page: sPage = 1, limit: sLimit = 20, sort: sSort } = req.query;
 
-  const { skip, limit, page } = limitPage({
-    page: pg,
-    limit: sl,
+  const { skip, limit, page } = getSkipLimitPage({
+    page: sPage,
+    limit: sLimit,
   });
 
-  const { sortOpts, sort } = sortType(ss);
+  const { sortOpts, sort } = getSortTypeByTitleOrPopularity(sSort);
 
   const result = await Recipe.aggregate([
     {
-      ...facetObject({ sortOpts, skip, limit }),
+      ...getFacetObject({ sortOpts, skip, limit }),
     },
   ]);
 
-  const response = pagedResult({
+  const response = processPagedRecipesResult({
     result,
     userId: req.user._id,
   });
