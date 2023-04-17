@@ -32,9 +32,9 @@ const getMainPage = async (req, res, next) => {
     resultRecipes[0].miscellaneous,
     req.user._id
   );
-  const dessert = listRecipeResponse(resultRecipes[0].dessert, req.user._id);
+  const desserts = listRecipeResponse(resultRecipes[0].dessert, req.user._id);
 
-  const result = [breakfast, vegan, miscellaneous, dessert];
+  const result = [breakfast, miscellaneous, vegan, desserts];
 
   res.status(200).json({ result });
 };

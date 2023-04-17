@@ -7,7 +7,7 @@ const regexByKeywords = require("./regexByKeywords");
 const limitPage = require("./limitPage");
 const pagedResult = require("./pagedResult");
 const sortType = require("./sortType");
-const toCloudinary = require("./uploadImageToCloudinary");
+const toCloudinary = require("./toCloudinary");
 
 module.exports = {
   HttpError,
