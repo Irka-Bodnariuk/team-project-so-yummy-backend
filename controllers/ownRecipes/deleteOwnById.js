@@ -1,5 +1,5 @@
 const { OwnRecipe } = require("../../models/ownRecipe");
-const { HttpError } = require("../../helpers");
+const { HttpError, deleteImageFromCloudinary } = require("../../helpers");
 
 const deleteOwnById = async (req, res) => {
   const { id } = req.params;
@@ -11,8 +11,23 @@ const deleteOwnById = async (req, res) => {
   if (String(recipe.owner) !== String(req.user._id)) {
     throw HttpError(403);
   }
+  if (recipe.preview) {
+    try {
+      await deleteImageFromCloudinary(recipe.preview);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  if (recipe.fullImg) {
+    try {
+      await deleteImageFromCloudinary(recipe.fullImg);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   await OwnRecipe.findByIdAndDelete(id);
+  req.user.ownRecipesNumber = req.user.ownRecipesNumber - 1;
   req.user.save();
   res.json({ message: `Recipe ${id} has been successfully deleted` });
 };

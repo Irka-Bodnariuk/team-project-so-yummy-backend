@@ -1,4 +1,4 @@
-const facetObject = ({ sortOpts, skip, limit }) => {
+const getFacetObject = ({ sortOpts, skip, limit }) => {
   return {
     $facet: {
       data: [
@@ -9,6 +9,10 @@ const facetObject = ({ sortOpts, skip, limit }) => {
           $project: {
             createdAt: 0,
             updatedAt: 0,
+            // ingredients: 0,
+            // area: 0,
+            // tags: 0,
+            // thumb: 0,
           },
         },
       ],
@@ -17,4 +21,4 @@ const facetObject = ({ sortOpts, skip, limit }) => {
   };
 };
 
-module.exports = facetObject;
+module.exports = getFacetObject;

@@ -1,12 +1,15 @@
-const { limitPage, pagedResult } = require("../../helpers");
+const {
+  getSkipLimitPage,
+  processPagedRecipesResult,
+} = require("../../helpers");
 const { OwnRecipe } = require("../../models/ownRecipe");
 
 const getOwnRecipes = async (req, res) => {
-  const { page: sp = 1, limit: sl = 12 } = req.query;
+  const { page: sPage = 1, limit: sLimit = 12 } = req.query;
 
-  const { skip, limit, page } = limitPage({
-    page: sp,
-    limit: sl,
+  const { skip, limit, page } = getSkipLimitPage({
+    page: sPage,
+    limit: sLimit,
   });
   const result = await OwnRecipe.aggregate([
     { $match: { owner: { $in: [req.user._id] } } },
@@ -28,7 +31,7 @@ const getOwnRecipes = async (req, res) => {
       },
     },
   ]);
-  const response = pagedResult({
+  const response = processPagedRecipesResult({
     result,
     userId: req.user._id,
   });
