@@ -1,7 +1,7 @@
-const getSortTypeByTitleOrPopularity = (sSort) => {
+const sortType = (ss) => {
   let sort = "popular";
   let sortOpts = {};
-  if (sSort === "title") {
+  if (ss === "title") {
     sort = "title";
     sortOpts = { title: 1 };
   } else {
@@ -10,4 +10,4 @@ const getSortTypeByTitleOrPopularity = (sSort) => {
   return { sortOpts, sort };
 };
 
-module.exports = getSortTypeByTitleOrPopularity;
+module.exports = sortType;
