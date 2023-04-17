@@ -7,9 +7,9 @@ const {
 } = require("../../helpers");
 
 const getAll = async (req, res) => {
-  const { page: pg = 1, limit: sl = 20, sort: ss } = req.query;
+  const { page: pg = 1, sort: ss, limit: sl = 20 } = req.query;
 
-  const { skip, limit, page } = limitPage({
+  const { page, skip, limit } = limitPage({
     page: pg,
     limit: sl,
   });

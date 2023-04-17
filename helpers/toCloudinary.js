@@ -10,7 +10,7 @@ cloudinary.config({
   api_secret: CLOUDINARY_SECRET,
 });
 
-const toCloudinary = async (buffer, saveAvatarURL, userId) => {
+const toCloudinary = async (buffer, savePreview, userId) => {
   const options = {
     resource_type: "image",
     public_id: `${userId}/${nanoid()}`,
@@ -22,7 +22,7 @@ const toCloudinary = async (buffer, saveAvatarURL, userId) => {
           console.log(error.message);
         } else {
           try {
-            await saveAvatarURL(result);
+            await savePreview(result);
           } catch (error) {
             console.log(error.message);
           }
