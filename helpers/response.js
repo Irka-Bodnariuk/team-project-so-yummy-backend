@@ -20,8 +20,8 @@ const response = (response, userId) => {
       instructions,
       preview,
       time,
-      like,
-      favorite,
+      likes,
+      favorites,
     };
   });
   return recipes;

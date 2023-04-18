@@ -95,10 +95,6 @@ const recipeSchema = new Schema(
 );
 
 recipeSchema.post("save", handleMongooseError);
-recipeSchema.pre("save", function (next) {
-  this.popularity = this.likes.length;
-  next();
-});
 
 const addSchema = Joi.object({});
 
