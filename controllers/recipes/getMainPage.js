@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models/recipes");
-const { response } = require("../../helpers");
+// const { response } = require("../../helpers");
 
 const getMainPage = async (req, res, next) => {
   const options = [
@@ -9,6 +9,10 @@ const getMainPage = async (req, res, next) => {
       $project: {
         createdAt: 0,
         updatedAt: 0,
+        ingredients: 0,
+        area: 0,
+        tags: 0,
+        thumb: 0,
       },
     },
   ];
@@ -30,7 +34,7 @@ const getMainPage = async (req, res, next) => {
 
   const result = [breakfast, miscellaneous, vegan, desserts];
 
-  res.status(200).json({ result });
+  res.status(200).json({ resultRecipes });
 };
 
 module.exports = getMainPage;
