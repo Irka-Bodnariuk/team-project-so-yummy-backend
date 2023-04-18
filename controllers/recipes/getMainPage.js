@@ -30,9 +30,9 @@ const getMainPage = async (req, res, next) => {
   const miscellaneous = resultRecipes[0].miscellaneous;
   const desserts = resultRecipes[0].dessert;
 
-  const result = { breakfast, vegan, miscellaneous, desserts };
+  const result = [breakfast, vegan, miscellaneous, desserts];
 
-  res.status(200).json(result);
+  res.status(200).json({ result });
 };
 
 module.exports = getMainPage;
