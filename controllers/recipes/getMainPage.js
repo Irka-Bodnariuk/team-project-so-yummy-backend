@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models/recipes");
-// const { response } = require("../../helpers");
+const { response } = require("../../helpers");
 
 const getMainPage = async (req, res, next) => {
   const options = [
