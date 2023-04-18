@@ -32,7 +32,7 @@ const getMainPage = async (req, res, next) => {
   const miscellaneous = response(resultRecipes[0].miscellaneous, req.user._id);
   const desserts = response(resultRecipes[0].dessert, req.user._id);
 
-  const result = resultRecipes;
+  const result = [...resultRecipes];
 
   res.status(200).json({ result });
 };
