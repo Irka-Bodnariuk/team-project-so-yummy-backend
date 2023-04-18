@@ -9,6 +9,7 @@ const pagedResult = require("./pagedResult");
 const sortType = require("./sortType");
 const response = require("./response");
 const toCloudinary = require("./toCloudinary");
+const imgResize = require("./imgResize");
 
 module.exports = {
   HttpError,
@@ -22,4 +23,5 @@ module.exports = {
   sortType,
   response,
   toCloudinary,
+  imgResize,
 };

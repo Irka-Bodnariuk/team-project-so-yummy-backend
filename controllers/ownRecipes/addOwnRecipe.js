@@ -1,5 +1,5 @@
 const { OwnRecipe } = require("../../models/ownRecipe");
-const { HttpError, toCloudinary } = require("../../helpers");
+const { HttpError, toCloudinary, imgResize } = require("../../helpers");
 
 const addOwnRecipe = async (req, res) => {
   const {
@@ -34,14 +34,18 @@ const addOwnRecipe = async (req, res) => {
           preview,
         });
       } else {
-        throw HttpError(400, " An error occured");
+        throw HttpError(400, " Something went wrong");
       }
     };
     try {
-      const preview = req.file.path;
+      const preview = await imgResize({
+        body: req.file,
+        width: 350,
+        height: 350,
+      });
       await toCloudinary(preview, recipePreview, req.user._id);
     } catch (error) {
-      throw HttpError(400, "Thomesing wrong");
+      throw HttpError(400, "Something went wrong");
     }
   } else {
     const newRecipe = await OwnRecipe.create({
@@ -60,7 +64,7 @@ const addOwnRecipe = async (req, res) => {
         message: `Recipe ${newRecipe.title} has been created`,
       });
     } else {
-      throw HttpError(400, " Thomesing wrong");
+      throw HttpError(400, " Something went wrong");
     }
   }
 };
