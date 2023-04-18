@@ -10,7 +10,7 @@ cloudinary.config({
   api_secret: CLOUDINARY_SECRET,
 });
 
-const uploadImageToCloudinary = async (buffer, saveAvatarURL, userId) => {
+const toCloudinary = async (buffer, saveAvatarURL, userId) => {
   const options = {
     resource_type: "image",
     public_id: `${userId}/${nanoid()}`,
@@ -35,4 +35,4 @@ const uploadImageToCloudinary = async (buffer, saveAvatarURL, userId) => {
   }
 };
 
-module.exports = uploadImageToCloudinary;
+module.exports = toCloudinary;
