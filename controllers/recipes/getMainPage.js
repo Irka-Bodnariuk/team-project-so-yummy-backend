@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models/recipes");
-const { listRecipeResponse } = require("../../helpers");
+const { response } = require("../../helpers");
 
 const getMainPage = async (req, res, next) => {
   const options = [
@@ -23,16 +23,10 @@ const getMainPage = async (req, res, next) => {
     },
   ]);
 
-  const breakfast = listRecipeResponse(
-    resultRecipes[0].breakfast,
-    req.user._id
-  );
-  const vegan = listRecipeResponse(resultRecipes[0].vegan, req.user._id);
-  const miscellaneous = listRecipeResponse(
-    resultRecipes[0].miscellaneous,
-    req.user._id
-  );
-  const desserts = listRecipeResponse(resultRecipes[0].dessert, req.user._id);
+  const breakfast = response(resultRecipes[0].breakfast, req.user._id);
+  const vegan = response(resultRecipes[0].vegan, req.user._id);
+  const miscellaneous = response(resultRecipes[0].miscellaneous, req.user._id);
+  const desserts = response(resultRecipes[0].dessert, req.user._id);
 
   const result = [breakfast, miscellaneous, vegan, desserts];
 

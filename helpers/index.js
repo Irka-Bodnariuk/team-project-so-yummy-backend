@@ -7,6 +7,7 @@ const regexByKeywords = require("./regexByKeywords");
 const limitPage = require("./limitPage");
 const pagedResult = require("./pagedResult");
 const sortType = require("./sortType");
+const response = require("./response");
 const toCloudinary = require("./toCloudinary");
 
 module.exports = {
@@ -19,5 +20,6 @@ module.exports = {
   limitPage,
   pagedResult,
   sortType,
+  response,
   toCloudinary,
 };
