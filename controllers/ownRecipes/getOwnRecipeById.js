@@ -12,28 +12,13 @@ const getOwnRecipeById = async (req, res) => {
     throw HttpError(404, `Recipe with ${id} was not found`);
   }
 
-  const {
-    _id,
-    title,
-    category,
-    description,
-    instructions,
-    time,
-    ingredients,
-    preview,
-  } = result;
+  const { ingredients } = result;
 
   const ingredientsParse = JSON.parse(ingredients);
 
   res.json({
-    _id,
-    title,
-    category,
-    description,
-    instructions,
+    ...result,
     ingredientsParse,
-    time,
-    preview,
   });
 };
 

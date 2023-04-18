@@ -11,7 +11,6 @@ const getMainPage = async (req, res, next) => {
         ingredients: 0,
         area: 0,
         tags: 0,
-        thumb: 0,
       },
     },
   ];
@@ -26,14 +25,14 @@ const getMainPage = async (req, res, next) => {
     },
   ]);
 
-  const result = [
-    resultRecipes[0].breakfast,
-    resultRecipes[0].vegan,
-    resultRecipes[0].miscellaneous,
-    resultRecipes[0].desserts,
-  ];
+  const breakfast = resultRecipes[0].breakfast;
+  const vegan = resultRecipes[0].vegan;
+  const miscellaneous = resultRecipes[0].miscellaneous;
+  const desserts = resultRecipes[0].dessert;
 
-  res.status(200).json({ result });
+  const result = { breakfast, vegan, miscellaneous, desserts };
+
+  res.status(200).json(result);
 };
 
 module.exports = getMainPage;
