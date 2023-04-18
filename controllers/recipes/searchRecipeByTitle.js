@@ -1,11 +1,11 @@
 const { Recipe } = require("../../models/recipes");
 
 const {
-  getSkipLimitPage,
-  getRegexForSearchByKeywords,
-  getSortTypeByTitleOrPopularity,
-  getFacetObject,
-  processPagedRecipesResult,
+  limitPage,
+  regexByKeywords,
+  sortType,
+  facetObject,
+  pagedResult,
   HttpError,
 } = require("../../helpers");
 
@@ -14,27 +14,27 @@ const searchRecipeByTitle = async (req, res) => {
   if (!query) {
     throw HttpError(400);
   }
-  const regex = getRegexForSearchByKeywords(query);
+  const regex = regexByKeywords(query);
 
   const userId = req.user._id;
 
-  const { page: sPage = 1, limit: sLimit = 12, sort: sSort } = req.query;
+  const { page: sp = 1, limit: sl = 12, sort: ss } = req.query;
 
-  const { skip, limit, page } = getSkipLimitPage({
-    page: sPage,
-    limit: sLimit,
+  const { skip, limit, page } = limitPage({
+    page: sp,
+    limit: sl,
   });
 
-  const { sortOpts, sort } = getSortTypeByTitleOrPopularity(sSort);
+  const { sortOpts, sort } = sortType(ss);
 
   const result = await Recipe.aggregate([
     { $match: { title: { $regex: regex } } },
     {
-      ...getFacetObject({ sortOpts, skip, limit }),
+      ...facetObject({ sortOpts, skip, limit }),
     },
   ]);
 
-  const response = processPagedRecipesResult({
+  const response = pagedResult({
     result,
     userId,
   });
