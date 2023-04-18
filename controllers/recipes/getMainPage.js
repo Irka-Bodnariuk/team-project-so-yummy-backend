@@ -1,5 +1,4 @@
 const { Recipe } = require("../../models/recipes");
-const { response } = require("../../helpers");
 
 const getMainPage = async (req, res, next) => {
   const options = [
@@ -27,12 +26,12 @@ const getMainPage = async (req, res, next) => {
     },
   ]);
 
-  const breakfast = response(resultRecipes[0].breakfast, req.user._id);
-  const vegan = response(resultRecipes[0].vegan, req.user._id);
-  const miscellaneous = response(resultRecipes[0].miscellaneous, req.user._id);
-  const desserts = response(resultRecipes[0].dessert, req.user._id);
-
-  const result = [...resultRecipes];
+  const result = [
+    resultRecipes[0].breakfast,
+    resultRecipes[0].vegan,
+    resultRecipes[0].miscellaneous,
+    resultRecipes[0].desserts,
+  ];
 
   res.status(200).json({ result });
 };
